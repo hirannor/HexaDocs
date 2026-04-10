@@ -10,7 +10,7 @@ import java.util.Objects;
 public class IngestionJob extends AggregateRoot {
     private final IngestionJobId id;
     private final DocumentId documentId;
-    private final List<String> errors = new ArrayList<>();
+    private final List<String> errors;
 
     private JobStatus status;
 
@@ -18,6 +18,7 @@ public class IngestionJob extends AggregateRoot {
         this.id = Objects.requireNonNull(id);
         this.documentId = Objects.requireNonNull(documentId);
         this.status = JobStatus.PENDING;
+        this.errors = new ArrayList<>();
     }
 
     public static IngestionJob create(final CreateIngestionJob command) {
@@ -47,16 +48,4 @@ public class IngestionJob extends AggregateRoot {
         return Collections.unmodifiableList(errors);
     }
 
-    public void start() {
-        this.status = JobStatus.RUNNING;
-    }
-
-    public void complete() {
-        this.status = JobStatus.COMPLETED;
-    }
-
-    public void fail(String error) {
-        this.status = JobStatus.FAILED;
-        this.errors.add(error);
-    }
 }

@@ -1,12 +1,10 @@
 package java.io.github.hirannor.hexadocs.domain.knowledgebase;
 
-import java.io.github.hirannor.hexadocs.domain.document.DocumentId;
 import java.io.github.hirannor.hexadocs.infrastructure.aggregate.AggregateRoot;
 import java.util.*;
 
 public class KnowledgeBase extends AggregateRoot {
     private final KnowledgeBaseId id;
-    private final Set<DocumentId> documents = new HashSet<>();
 
     private String name;
 
@@ -34,20 +32,9 @@ public class KnowledgeBase extends AggregateRoot {
         return name;
     }
 
-    public Set<DocumentId> documents() {
-        return Collections.unmodifiableSet(documents);
-    }
 
     public void rename(final String newName) {
         this.name = Objects.requireNonNull(newName);
-    }
-
-    public void addDocument(final DocumentId documentId) {
-        documents.add(documentId);
-    }
-
-    public void removeDocument(final DocumentId documentId) {
-        documents.remove(documentId);
     }
 
 }
