@@ -1,0 +1,53 @@
+package java.io.github.hirannor.hexadocs.domain.knowledgebase;
+
+import java.io.github.hirannor.hexadocs.domain.document.DocumentId;
+import java.io.github.hirannor.hexadocs.infrastructure.aggregate.AggregateRoot;
+import java.util.*;
+
+public class KnowledgeBase extends AggregateRoot {
+    private final KnowledgeBaseId id;
+    private final Set<DocumentId> documents = new HashSet<>();
+
+    private String name;
+
+    public KnowledgeBase(final KnowledgeBaseId id, final String name) {
+        this.id = Objects.requireNonNull(id);
+        this.name = Objects.requireNonNull(name);
+    }
+
+    public static KnowledgeBase create(final CreateKnowledgeBase command) {
+        final KnowledgeBase knowledgeBase = new KnowledgeBase(
+                KnowledgeBaseId.generate(),
+                command.name()
+        );
+
+        knowledgeBase.addEvent(KnowledgeBaseCreated.record(knowledgeBase.id, command.name()));
+
+        return knowledgeBase;
+    }
+
+    public KnowledgeBaseId id() {
+        return id;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public Set<DocumentId> documents() {
+        return Collections.unmodifiableSet(documents);
+    }
+
+    public void rename(final String newName) {
+        this.name = Objects.requireNonNull(newName);
+    }
+
+    public void addDocument(final DocumentId documentId) {
+        documents.add(documentId);
+    }
+
+    public void removeDocument(final DocumentId documentId) {
+        documents.remove(documentId);
+    }
+
+}
