@@ -1,4 +1,4 @@
-package java.io.github.hirannor.hexadocs.adapter.persistence.jpa;
+package java.io.github.hirannor.hexadocs.adapter.persistence.mongo;
 
 import java.io.github.hirannor.hexadocs.application.document.port.DocumentTextStorage;
 import java.io.github.hirannor.hexadocs.domain.document.DocumentId;
