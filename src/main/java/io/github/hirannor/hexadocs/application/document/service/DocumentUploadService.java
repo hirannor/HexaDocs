@@ -10,14 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 class DocumentUploadService implements DocumentUpload {
-    private final DocumentRepository documents;
+    private final DocumentMetadataRepository documentMetadata;
     private final DocumentStorage documentStorage;
     private final MessagePublisher messages;
 
-    DocumentUploadService(final DocumentRepository documents,
+    DocumentUploadService(final DocumentMetadataRepository documentMetadata,
                           final DocumentStorage documentStorage,
                           final MessagePublisher messages) {
-        this.documents = documents;
+        this.documentMetadata = documentMetadata;
         this.documentStorage = documentStorage;
         this.messages = messages;
     }
@@ -37,7 +37,7 @@ class DocumentUploadService implements DocumentUpload {
                 command.name(),
                 FileReference.of(id.asText())
         );
-        documents.save(document);
+        documentMetadata.save(document);
 
         document.events()
                 .forEach(messages::publish);

@@ -2,7 +2,7 @@ package io.github.hirannor.hexadocs.adapter.persistence.jpa;
 
 import io.github.hirannor.hexadocs.domain.document.Document;
 import io.github.hirannor.hexadocs.domain.document.DocumentId;
-import io.github.hirannor.hexadocs.domain.document.DocumentRepository;
+import io.github.hirannor.hexadocs.domain.document.DocumentMetadataRepository;
 import io.github.hirannor.hexadocs.domain.knowledgebase.KnowledgeBaseId;
 import org.springframework.stereotype.Component;
 
@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-class JpaDocumentRepository implements DocumentRepository {
+class JpaDocumentMetadataRepository implements DocumentMetadataRepository {
 
-    JpaDocumentRepository() {
+    JpaDocumentMetadataRepository() {
     }
 
     @Override

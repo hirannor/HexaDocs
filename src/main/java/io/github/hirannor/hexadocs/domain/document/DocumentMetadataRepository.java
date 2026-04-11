@@ -5,7 +5,7 @@ import io.github.hirannor.hexadocs.domain.knowledgebase.KnowledgeBaseId;
 import java.util.List;
 import java.util.Optional;
 
-public interface DocumentRepository {
+public interface DocumentMetadataRepository {
 
     void save(final Document document);
 
