@@ -1,5 +1,6 @@
 package io.github.hirannor.hexadocs.application.document.events;
 
+import io.github.hirannor.hexadocs.application.document.service.DocumentTextExtracted;
 import io.github.hirannor.hexadocs.application.ingestionjob.usecase.IngestionJobCompleting;
 import io.github.hirannor.hexadocs.application.ingestionjob.usecase.IngestionJobStarting;
 import io.github.hirannor.hexadocs.domain.document.events.DocumentProcessed;
@@ -32,7 +33,7 @@ public class DocumentEventHandler {
     }
 
     @EventListener
-    void handle(final DocumentProcessingFailed event) {
+    void handle(final DocumentTextExtracted event) {
 
     }
 }

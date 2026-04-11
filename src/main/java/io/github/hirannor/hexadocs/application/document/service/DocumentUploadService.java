@@ -1,7 +1,7 @@
 package io.github.hirannor.hexadocs.application.document.service;
 
 import io.github.hirannor.hexadocs.application.document.port.DocumentStorage;
-import io.github.hirannor.hexadocs.application.document.usecase.DocumentUpload;
+import io.github.hirannor.hexadocs.application.document.usecase.DocumentUploading;
 import io.github.hirannor.hexadocs.domain.document.*;
 import io.github.hirannor.hexadocs.infrastructure.messaging.MessagePublisher;
 import org.slf4j.Logger;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-class DocumentUploadService implements DocumentUpload {
+class DocumentUploadService implements DocumentUploading {
 
     private static final Logger log = LoggerFactory.getLogger(DocumentUploadService.class);
 
