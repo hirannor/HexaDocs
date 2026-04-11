@@ -1,8 +1,10 @@
 package io.github.hirannor.hexadocs.adapter.ai;
 
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class SpringAIRagConfig {
+@ComponentScan
+public class SpringAIKnowledgeConfiguration {
 
 }

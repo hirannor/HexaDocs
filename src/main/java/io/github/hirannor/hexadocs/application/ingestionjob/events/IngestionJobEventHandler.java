@@ -18,4 +18,5 @@ public class IngestionJobEventHandler {
     void handle(final IngestionJobStarted event) {
         document.process(StartDocumentProcessing.issue(event.jobId(), event.knowledgeBaseId(), event.documentId()));
     }
+
 }

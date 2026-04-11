@@ -1,9 +1,41 @@
 package io.github.hirannor.hexadocs;
 
+import io.github.hirannor.hexadocs.adapter.ai.SpringAIKnowledgeConfiguration;
+import io.github.hirannor.hexadocs.adapter.chunk.TextChunkerConfiguration;
+import io.github.hirannor.hexadocs.adapter.extraction.TextExtractionConfiguration;
+import io.github.hirannor.hexadocs.adapter.file.DocumentStorageConfiguration;
+import io.github.hirannor.hexadocs.adapter.messaging.eventbus.rabbit.RabbitMessagingConfiguration;
+import io.github.hirannor.hexadocs.adapter.persistence.jpa.JpaPersistenceConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
 
-@SpringBootApplication
+@Import({
+        JpaPersistenceConfiguration.class,
+        SpringAIKnowledgeConfiguration.class,
+        RabbitMessagingConfiguration.class,
+        TextExtractionConfiguration.class,
+        TextChunkerConfiguration.class,
+        DocumentStorageConfiguration.class
+})
+@SpringBootApplication(
+        exclude = {
+                org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration.class,
+                org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration.class,
+                org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration.class,
+                org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class
+        }
+)
+@ComponentScan(
+        excludeFilters = {
+                @ComponentScan.Filter(
+                        type = FilterType.REGEX,
+                        pattern = "io.github.hirannor.hexadocs.adapter.*"
+                ),
+        }
+)
 public class HexaDocsApplication {
 
     public static void main(String[] args) {

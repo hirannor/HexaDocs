@@ -31,3 +31,4 @@ messaging:
 
 adapter:
   messaging: rabbitmq
+  persistence: spring-data-jpa

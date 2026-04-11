@@ -36,7 +36,6 @@ public class IngestionJob extends AggregateRoot {
         );
     }
 
-
     public void start() {
         if (status != JobStatus.PENDING) {
             throw new IllegalStateException("Job already started or finished: " + id);
@@ -49,6 +48,23 @@ public class IngestionJob extends AggregateRoot {
                 documentId,
                 knowledgeBaseId
         ));
+    }
+
+    public void complete() {
+        if (status != JobStatus.RUNNING) {
+            throw new IllegalStateException("Job not running: " + id);
+        }
+
+        status = JobStatus.COMPLETED;
+    }
+
+    public void fail(final String error) {
+        if (status != JobStatus.RUNNING) {
+            throw new IllegalStateException("Job not running: " + id);
+        }
+
+        status = JobStatus.FAILED;
+        errors.add(error);
     }
 
     public IngestionJobId id() {

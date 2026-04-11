@@ -1,5 +1,6 @@
 package io.github.hirannor.hexadocs.application.ingestionjob.service;
 
+import io.github.hirannor.hexadocs.application.ingestionjob.usecase.IngestionJobCompleting;
 import io.github.hirannor.hexadocs.application.ingestionjob.usecase.IngestionJobStarting;
 import io.github.hirannor.hexadocs.domain.ingestionjob.IngestionJob;
 import io.github.hirannor.hexadocs.domain.ingestionjob.IngestionJobId;
@@ -14,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-class IngestionJobService implements IngestionJobStarting {
+class IngestionJobService implements IngestionJobStarting, IngestionJobCompleting {
 
     private static final Logger log = LoggerFactory.getLogger(IngestionJobService.class);
 
@@ -46,4 +47,21 @@ class IngestionJobService implements IngestionJobStarting {
 
         return job.id();
     }
+
+    @Override
+    public void complete(final IngestionJobId jobId) {
+        log.info("Completing ingestion job | jobId={}", jobId.asText());
+
+        final IngestionJob job = ingestionJobs.findById(jobId)
+                .orElseThrow(() -> new IllegalStateException("Job not found: " + jobId));
+
+        job.complete();
+
+        ingestionJobs.save(job);
+
+        job.events().forEach(messages::publish);
+
+        log.info("Ingestion job completed | jobId={}", jobId.asText());
+    }
+
 }
