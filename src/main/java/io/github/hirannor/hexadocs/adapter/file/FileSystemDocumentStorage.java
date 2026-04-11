@@ -16,7 +16,7 @@ class FileSystemDocumentStorage implements DocumentStorage {
     }
 
     @Override
-    public byte[] load(final DocumentId documentId) {
+    public byte[] loadById(final DocumentId documentId) {
         return new byte[0];
     }
 

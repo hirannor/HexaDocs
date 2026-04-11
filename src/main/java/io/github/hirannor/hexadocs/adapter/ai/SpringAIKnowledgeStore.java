@@ -56,9 +56,6 @@ class SpringAIKnowledgeStore implements KnowledgeStore {
     private Document toSpringDocument(final VectorDocument doc) {
         final Map<String, Object> metadata = new HashMap<>(doc.metadata());
 
-        metadata.put("documentId", doc.documentId().asText());
-        metadata.put("knowledgeBaseId", doc.knowledgeBaseId().asText());
-
         return new Document(doc.id(), doc.content(), metadata);
     }
 

@@ -4,12 +4,18 @@ import io.github.hirannor.hexadocs.application.document.port.DocumentStorage;
 import io.github.hirannor.hexadocs.application.document.usecase.DocumentUpload;
 import io.github.hirannor.hexadocs.domain.document.*;
 import io.github.hirannor.hexadocs.infrastructure.messaging.MessagePublisher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 class DocumentUploadService implements DocumentUpload {
+
+    private static final Logger log = LoggerFactory.getLogger(DocumentUploadService.class);
+
     private final DocumentMetadataRepository documentMetadata;
     private final DocumentStorage documentStorage;
     private final MessagePublisher messages;
@@ -24,23 +30,34 @@ class DocumentUploadService implements DocumentUpload {
 
     @Override
     public DocumentId upload(final UploadDocument command, final byte[] content) {
+
+        log.info("Uploading document | name={} | knowledgeBaseId={} | contentType={} | size={}",
+                command.name(),
+                command.knowledgeBaseId().asText(),
+                command.contentType(),
+                content != null ? content.length : 0
+        );
         final DocumentId id = DocumentId.generate();
 
-        documentStorage.store(
-                id,
-                content,
-                command.contentType()
-        );
         final Document document = Document.register(
                 id,
                 command.knowledgeBaseId(),
                 command.name(),
                 FileReference.of(id.asText())
         );
+
         documentMetadata.save(document);
+
+        documentStorage.store(
+                id,
+                content,
+                command.contentType()
+        );
 
         document.events()
                 .forEach(messages::publish);
+
+        log.info("Document upload completed successfully | documentId={}", id.asText());
 
         return id;
     }
