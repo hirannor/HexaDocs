@@ -31,7 +31,7 @@ class DocumentUploadService implements DocumentUploading {
     @Override
     public DocumentId upload(final UploadDocument command, final byte[] content) {
 
-        log.info("Uploading document | name={} | knowledgeBaseId={} | contentType={} | size={}",
+        log.info("Uploading documentId | name={} | knowledgeBaseId={} | contentType={} | size={}",
                 command.name(),
                 command.knowledgeBaseId().asText(),
                 command.contentType(),
