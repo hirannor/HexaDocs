@@ -1,3 +1,33 @@
 spring:
-    application:
-        name: HexaDocs
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5342/hexadocsdb
+    username: root
+    password: hexagonal123
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  ai:
+    openai:
+      api-key: # insert here your api key
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        dimensions: 1536
+        index-type: hnsw
+  application:
+    name: HexaDocs
+messaging:
+  rabbit:
+    exchange: hexa.exchange
+    queue: hexa.queue
+    retry:
+      max-attempts: 3
+
+adapter:
+  messaging: rabbitmq

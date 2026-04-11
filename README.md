@@ -1,6 +1,7 @@
 # 📚 HexaDocs
 
-A **domain-driven, event-driven document intelligence system** built with **Hexagonal Architecture**, designed to support semantic document ingestion, chunking, embedding, and AI-powered retrieval (RAG).
+A **domain-driven, event-driven document intelligence system** built with **Hexagonal Architecture**, designed to
+support semantic document ingestion, chunking, embedding, and AI-powered retrieval (RAG).
 
 ---
 
@@ -14,7 +15,8 @@ HexaDocs is a backend system that allows users to:
 - Store vectors in a dedicated vector store
 - Enable AI-powered question answering over documents
 
-The system is designed around **clean architecture principles**, strong domain modeling, and asynchronous event-driven workflows.
+The system is designed around **clean architecture principles**, strong domain modeling, and asynchronous event-driven
+workflows.
 
 ---
 
