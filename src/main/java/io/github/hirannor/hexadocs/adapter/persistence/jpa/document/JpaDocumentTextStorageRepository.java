@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-class JpaDocumentTextStorage implements DocumentTextStorage {
-    JpaDocumentTextStorage() {
+class JpaDocumentTextStorageRepository implements DocumentTextStorage {
+    JpaDocumentTextStorageRepository() {
     }
 
     @Override

@@ -10,7 +10,6 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.retry.RejectAndDontRequeueRecoverer;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
 import org.springframework.boot.autoconfigure.amqp.SimpleRabbitListenerContainerFactoryConfigurer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -29,38 +28,39 @@ import java.util.Objects;
         havingValue = "rabbitmq"
 )
 @EnableScheduling
-@EnableConfigurationProperties(RabbitConfigurationProperties.class)
-public class RabbitMessagingConfiguration {
+@EnableConfigurationProperties(RabbitMqConfigurationProperties.class)
+public class RabbitMqMessagingConfiguration {
 
-    private final RabbitConfigurationProperties properties;
+    public static final String MESSAGE_QUEUE_RK = "messages";
+
+    private final RabbitMqConfigurationProperties properties;
     private final ObjectMapper objectMapper;
     private final RabbitProperties rabbitProperties;
 
     @Autowired
-    RabbitMessagingConfiguration(final RabbitConfigurationProperties properties,
-                                 final ObjectMapper objectMapper,
-                                 final RabbitProperties rabbitProperties) {
+    RabbitMqMessagingConfiguration(final RabbitMqConfigurationProperties properties,
+                                   final ObjectMapper objectMapper,
+                                   final RabbitProperties rabbitProperties) {
         this.properties = properties;
         this.objectMapper = objectMapper;
         this.rabbitProperties = rabbitProperties;
     }
 
     @Bean
-    TopicExchange hexaExchange() {
+    TopicExchange messageExchange() {
         return new TopicExchange(properties.getExchange());
     }
 
 
     @Bean
-    Queue hexaQueue() {
-        return QueueBuilder.durable(properties.getQueue())
+    Queue messageQueue() {
+        return QueueBuilder.durable(properties.getQueueName())
                 .build();
     }
 
     @Bean
-    Binding createHexaQueueBinding(@Qualifier("hexaQueue") final Queue omsQueue,
-                                   @Qualifier("hexaExchange") final TopicExchange omsExchange) {
-        return BindingBuilder.bind(omsQueue).to(omsExchange).with("hexa.events");
+    Binding createHexaQueueBinding() {
+        return BindingBuilder.bind(this.messageQueue()).to(messageExchange()).with(MESSAGE_QUEUE_RK);
     }
 
     @Bean

@@ -1,13 +1,13 @@
-package io.github.hirannor.hexadocs.adapter.file;
+package io.github.hirannor.hexadocs.adapter.file.localfilesystem;
 
 import io.github.hirannor.hexadocs.application.document.port.DocumentStorage;
 import io.github.hirannor.hexadocs.domain.document.DocumentId;
 import org.springframework.stereotype.Component;
 
 @Component
-class FileSystemDocumentStorage implements DocumentStorage {
+class LocalFileSystemDocumentStorage implements DocumentStorage {
 
-    FileSystemDocumentStorage() {
+    LocalFileSystemDocumentStorage() {
     }
 
     @Override

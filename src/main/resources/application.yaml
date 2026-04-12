@@ -1,3 +1,13 @@
+logging:
+  level:
+    root: INFO
+    io:
+      github:
+        hirannor:
+          hexadocs: DEBUG
+  file:
+    path: logs
+
 spring:
   rabbitmq:
     host: localhost
@@ -24,8 +34,8 @@ spring:
     name: HexaDocs
 messaging:
   rabbit:
-    exchange: hexa.exchange
-    queue: hexa.queue
+    exchange: messages.exchange
+    queue: messages.queue
     retry:
       max-attempts: 3
 
@@ -33,3 +43,6 @@ adapter:
   messaging: rabbitmq
   persistence: spring-data-jpa
   ai: spring-ai
+  file: local-file-system-storage
+  chunking: simple-text
+  extraction: pdf-text

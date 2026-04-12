@@ -1,4 +1,4 @@
-package io.github.hirannor.hexadocs.adapter.chunk;
+package io.github.hirannor.hexadocs.adapter.chunking.simple;
 
 import io.github.hirannor.hexadocs.application.document.port.Chunk;
 import io.github.hirannor.hexadocs.application.document.port.TextChunker;

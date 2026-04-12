@@ -1,10 +1,10 @@
 package io.github.hirannor.hexadocs;
 
 import io.github.hirannor.hexadocs.adapter.ai.SpringAIKnowledgeConfiguration;
-import io.github.hirannor.hexadocs.adapter.chunk.TextChunkerConfiguration;
-import io.github.hirannor.hexadocs.adapter.extraction.TextExtractionConfiguration;
-import io.github.hirannor.hexadocs.adapter.file.DocumentStorageConfiguration;
-import io.github.hirannor.hexadocs.adapter.messaging.eventbus.rabbit.RabbitMessagingConfiguration;
+import io.github.hirannor.hexadocs.adapter.chunking.simple.SimpleTextChunkerConfiguration;
+import io.github.hirannor.hexadocs.adapter.extraction.pdf.PdfTextExtractionConfiguration;
+import io.github.hirannor.hexadocs.adapter.file.localfilesystem.LocalFileSystemDocumentStorageConfiguration;
+import io.github.hirannor.hexadocs.adapter.messaging.eventbus.rabbit.RabbitMqMessagingConfiguration;
 import io.github.hirannor.hexadocs.adapter.persistence.jpa.JpaPersistenceConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,10 +15,10 @@ import org.springframework.context.annotation.Import;
 @Import({
         JpaPersistenceConfiguration.class,
         SpringAIKnowledgeConfiguration.class,
-        RabbitMessagingConfiguration.class,
-        TextExtractionConfiguration.class,
-        TextChunkerConfiguration.class,
-        DocumentStorageConfiguration.class
+        RabbitMqMessagingConfiguration.class,
+        PdfTextExtractionConfiguration.class,
+        SimpleTextChunkerConfiguration.class,
+        LocalFileSystemDocumentStorageConfiguration.class
 })
 @SpringBootApplication(
         exclude = {

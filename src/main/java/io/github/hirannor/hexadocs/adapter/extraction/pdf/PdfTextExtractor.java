@@ -1,4 +1,4 @@
-package io.github.hirannor.hexadocs.adapter.extraction;
+package io.github.hirannor.hexadocs.adapter.extraction.pdf;
 
 import io.github.hirannor.hexadocs.application.document.port.TextExtractor;
 import org.springframework.stereotype.Component;

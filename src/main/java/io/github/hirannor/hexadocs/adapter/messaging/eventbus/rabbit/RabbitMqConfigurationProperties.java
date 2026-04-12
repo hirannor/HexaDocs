@@ -3,12 +3,12 @@ package io.github.hirannor.hexadocs.adapter.messaging.eventbus.rabbit;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(value = "messaging.rabbit")
-public class RabbitConfigurationProperties {
+public class RabbitMqConfigurationProperties {
     private String exchange;
     private String queue;
     private Retry retry;
 
-    public RabbitConfigurationProperties() {
+    public RabbitMqConfigurationProperties() {
         this.retry = new Retry();
     }
 
@@ -20,7 +20,7 @@ public class RabbitConfigurationProperties {
         this.exchange = exchange;
     }
 
-    public String getQueue() {
+    public String getQueueName() {
         return queue;
     }
 
