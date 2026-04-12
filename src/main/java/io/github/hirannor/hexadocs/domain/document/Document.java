@@ -23,13 +23,17 @@ public class Document extends AggregateRoot {
         this.fileReference = fileReference;
     }
 
+    public static DocumentBuilder empty() {
+        return new DocumentBuilder();
+    }
+
     public static Document register(final DocumentId documentId, final KnowledgeBaseId kbId, final String name, final FileReference fileReference) {
-        final Document document = new Document(
-                documentId,
-                kbId,
-                name,
-                fileReference
-        );
+        final Document document = new DocumentBuilder()
+                .id(documentId)
+                .kbId(kbId)
+                .name(name)
+                .fileReference(fileReference)
+                .createDocument();
 
         document.addEvent(DocumentRegistered.record(document.id, document.knowledgeBaseId, document.name));
 

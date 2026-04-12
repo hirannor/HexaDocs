@@ -6,7 +6,8 @@ import io.github.hirannor.hexadocs.domain.document.DocumentId;
 import io.github.hirannor.hexadocs.domain.knowledgebase.KnowledgeBaseId;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 class DefaultVectorDocumentFactory implements VectorDocumentFactory {
@@ -22,7 +23,8 @@ class DefaultVectorDocumentFactory implements VectorDocumentFactory {
         for (final Chunk chunk : chunks) {
             result.add(
                     VectorDocument.empty()
-                            .id(UUID.randomUUID().toString())
+                            .chunkId(chunk.chunkId())
+                            .chunkHash(chunk.chunkHash())
                             .documentId(documentId)
                             .knowledgeBaseId(knowledgeBaseId)
                             .content(chunk.content())

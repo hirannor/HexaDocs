@@ -44,20 +44,31 @@ public class IngestionJobEntity {
     @Column(name = "ERROR")
     private List<String> errors = new ArrayList<>();
 
-    protected IngestionJobEntity() {
+    public IngestionJobEntity() {
     }
 
     public Long getId() {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getIngestionJobId() {
         return ingestionJobId;
     }
 
+    public void setIngestionJobId(final String ingestionJobId) {
+        this.ingestionJobId = ingestionJobId;
+    }
 
     public String getDocumentId() {
         return documentId;
+    }
+
+    public void setDocumentId(final String documentId) {
+        this.documentId = documentId;
     }
 
     public String getKnowledgeBaseId() {
@@ -68,13 +79,19 @@ public class IngestionJobEntity {
         this.knowledgeBaseId = knowledgeBaseId;
     }
 
-    public JobStatusEntity getStatus() {
+    public JobStatusEntity status() {
         return status;
     }
 
+    public void setStatus(final JobStatusEntity status) {
+        this.status = status;
+    }
 
-    public List<String> getErrors() {
+    public List<String> errors() {
         return errors;
     }
 
+    public void setErrors(final List<String> errors) {
+        this.errors = errors;
+    }
 }

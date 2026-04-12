@@ -3,14 +3,17 @@ package io.github.hirannor.hexadocs.adapter.persistence.jpa.knowledgebase;
 import io.github.hirannor.hexadocs.domain.knowledgebase.KnowledgeBase;
 import io.github.hirannor.hexadocs.domain.knowledgebase.KnowledgeBaseId;
 import io.github.hirannor.hexadocs.domain.knowledgebase.KnowledgeBaseRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Component
+@Repository
 class JpaKnowledgeBaseRepository implements KnowledgeBaseRepository {
 
-    JpaKnowledgeBaseRepository() {
+    private final KnowledgeBaseSpringDataJpaRepository knowledgebases;
+
+    JpaKnowledgeBaseRepository(final KnowledgeBaseSpringDataJpaRepository knowledgebases) {
+        this.knowledgebases = knowledgebases;
     }
 
     @Override

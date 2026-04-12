@@ -6,4 +6,5 @@ public interface KnowledgeStore {
     void store(final List<VectorDocument> documents);
 
     List<VectorSearchResult> search(final VectorQuery query);
+
 }

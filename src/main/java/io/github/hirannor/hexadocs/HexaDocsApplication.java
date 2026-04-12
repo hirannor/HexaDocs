@@ -1,11 +1,12 @@
 package io.github.hirannor.hexadocs;
 
-import io.github.hirannor.hexadocs.adapter.ai.SpringAIKnowledgeConfiguration;
+import io.github.hirannor.hexadocs.adapter.ai.SpringAiConfiguration;
 import io.github.hirannor.hexadocs.adapter.chunking.simple.SimpleTextChunkerConfiguration;
 import io.github.hirannor.hexadocs.adapter.extraction.pdf.PdfTextExtractionConfiguration;
 import io.github.hirannor.hexadocs.adapter.file.localfilesystem.LocalFileSystemDocumentStorageConfiguration;
 import io.github.hirannor.hexadocs.adapter.messaging.eventbus.rabbit.RabbitMqMessagingConfiguration;
 import io.github.hirannor.hexadocs.adapter.persistence.jpa.JpaPersistenceConfiguration;
+import io.github.hirannor.hexadocs.adapter.web.rest.RestConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,8 +14,9 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 
 @Import({
+        RestConfiguration.class,
         JpaPersistenceConfiguration.class,
-        SpringAIKnowledgeConfiguration.class,
+        SpringAiConfiguration.class,
         RabbitMqMessagingConfiguration.class,
         PdfTextExtractionConfiguration.class,
         SimpleTextChunkerConfiguration.class,

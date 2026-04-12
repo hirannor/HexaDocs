@@ -4,39 +4,53 @@ import io.github.hirannor.hexadocs.domain.document.Document;
 import io.github.hirannor.hexadocs.domain.document.DocumentId;
 import io.github.hirannor.hexadocs.domain.document.DocumentMetadataRepository;
 import io.github.hirannor.hexadocs.domain.knowledgebase.KnowledgeBaseId;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
-@Component
+@Repository
 class JpaDocumentMetadataRepository implements DocumentMetadataRepository {
 
-    JpaDocumentMetadataRepository() {
+    private final Function<DocumentEntity, Document> mapToDomain;
+    private final Function<Document, DocumentEntity> mapToEntity;
+
+    private final DocumentMetadataSpringDataJpaRepository documentMetadata;
+
+    JpaDocumentMetadataRepository(final DocumentMetadataSpringDataJpaRepository documentMetadata) {
+        this.documentMetadata = documentMetadata;
+        this.mapToDomain = new DocumentEntityToDomainMapper();
+        this.mapToEntity = new DocumentToEntityMapper();
     }
 
     @Override
     public void save(final Document document) {
-
+        final DocumentEntity toPersist = mapToEntity.apply(document);
+        documentMetadata.save(toPersist);
     }
 
     @Override
     public Optional<Document> findById(final DocumentId id) {
-        return Optional.empty();
+        return documentMetadata.findByDocumentId(id.asText())
+                .map(mapToDomain);
     }
 
     @Override
     public List<Document> findByKnowledgeBaseId(final KnowledgeBaseId knowledgeBaseId) {
-        return List.of();
+        return documentMetadata.findByKnowledgeBaseId(knowledgeBaseId.asText())
+                .stream()
+                .map(mapToDomain)
+                .toList();
     }
 
     @Override
     public boolean existsById(final DocumentId id) {
-        return false;
+        return documentMetadata.existsByDocumentId(id.asText());
     }
 
     @Override
     public void deleteById(final DocumentId id) {
-
+        documentMetadata.deleteByDocumentId(id.asText());
     }
 }

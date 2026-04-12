@@ -1,6 +1,5 @@
 package io.github.hirannor.hexadocs.adapter.persistence.jpa.document;
 
-
 import jakarta.persistence.*;
 
 @Entity
@@ -20,7 +19,7 @@ public class DocumentEntity {
     )
     private Long id;
 
-    @Column(name = "CUSTOMER_ID")
+    @Column(name = "DOCUMENT_ID")
     private String documentId;
 
     @Column(name = "KNOWLEDGE_BASE_ID")
@@ -35,15 +34,19 @@ public class DocumentEntity {
     protected DocumentEntity() {
     }
 
-    public Long getId() {
+    public Long id() {
         return id;
+    }
+
+    public void setId(final Long id) {
+        this.id = id;
     }
 
     public String getDocumentId() {
         return documentId;
     }
 
-    public void setDocumentId(String documentId) {
+    public void setDocumentId(final String documentId) {
         this.documentId = documentId;
     }
 
@@ -51,11 +54,23 @@ public class DocumentEntity {
         return knowledgeBaseId;
     }
 
+    public void setKnowledgeBaseId(final String knowledgeBaseId) {
+        this.knowledgeBaseId = knowledgeBaseId;
+    }
+
     public String getName() {
         return name;
     }
 
+    public void setName(final String name) {
+        this.name = name;
+    }
+
     public String getFileReference() {
         return fileReference;
+    }
+
+    public void setFileReference(final String fileReference) {
+        this.fileReference = fileReference;
     }
 }

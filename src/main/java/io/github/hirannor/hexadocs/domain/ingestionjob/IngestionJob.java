@@ -19,21 +19,27 @@ public class IngestionJob extends AggregateRoot {
 
     private JobStatus status;
 
-    private IngestionJob(IngestionJobId id,
-                         DocumentId documentId,
-                         KnowledgeBaseId knowledgeBaseId) {
+    IngestionJob(final IngestionJobId id,
+                 final DocumentId documentId,
+                 final KnowledgeBaseId knowledgeBaseId,
+                 final JobStatus status) {
         this.id = Objects.requireNonNull(id);
         this.documentId = Objects.requireNonNull(documentId);
         this.knowledgeBaseId = Objects.requireNonNull(knowledgeBaseId);
-        this.status = JobStatus.PENDING;
+        this.status = Objects.requireNonNull(status);
+    }
+
+    public static IngestionJobBuilder empty() {
+        return new IngestionJobBuilder();
     }
 
     public static IngestionJob create(StartIngestionJob command) {
-        return new IngestionJob(
-                IngestionJobId.generate(),
-                command.documentId(),
-                command.knowledgeBaseId()
-        );
+        return new IngestionJobBuilder()
+                .id(IngestionJobId.generate())
+                .documentId(command.documentId())
+                .kbId(command.knowledgeBaseId())
+                .status(JobStatus.PENDING)
+                .create();
     }
 
     public void start() {

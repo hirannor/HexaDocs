@@ -5,10 +5,10 @@ import io.github.hirannor.hexadocs.infrastructure.messaging.MessagePublisher;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
+import static io.github.hirannor.hexadocs.adapter.messaging.eventbus.rabbit.RabbitMqMessagingConfiguration.MESSAGE_QUEUE_RK;
+
 @Component
 class RabbitMqMessagePublisher implements MessagePublisher {
-    private static final String ROUTING_KEY = "hexa.events";
-
     private final RabbitTemplate rabbitTemplate;
     private final RabbitMqConfigurationProperties properties;
 
@@ -20,6 +20,6 @@ class RabbitMqMessagePublisher implements MessagePublisher {
 
     @Override
     public void publish(final Message message) {
-        this.rabbitTemplate.convertAndSend(properties.getExchange(), ROUTING_KEY, message);
+        this.rabbitTemplate.convertAndSend(properties.getExchange(), MESSAGE_QUEUE_RK, message);
     }
 }

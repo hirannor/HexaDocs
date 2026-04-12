@@ -10,7 +10,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-
+      - postgres_data:/var/lib/postgresql/data
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -21,3 +21,37 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_KEEP_ALIVE=10m
+      - OLLAMA_NUM_PARALLEL=2
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [ gpu ]
+
+  ollama-init:
+    image: curlimages/curl:latest
+    depends_on:
+      - ollama
+    entrypoint: >
+      sh -c "
+      echo 'Waiting for Ollama...' &&
+      sleep 5 &&
+      curl http://ollama:11434/api/pull -d '{\"name\": \"llama3\"}' &&
+      curl http://ollama:11434/api/pull -d '{\"name\": \"nomic-embed-text\"}' &&
+      echo 'Models preloaded'
+      "
+
+volumes:
+  postgres_data:
+  ollama_data:

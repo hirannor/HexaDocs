@@ -14,11 +14,11 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-class SpringAIKnowledgeStore implements KnowledgeStore {
+class SpringAiKnowledgeStore implements KnowledgeStore {
 
     private final VectorStore store;
 
-    public SpringAIKnowledgeStore(final VectorStore store) {
+    public SpringAiKnowledgeStore(final VectorStore store) {
         this.store = store;
     }
 
@@ -52,13 +52,15 @@ class SpringAIKnowledgeStore implements KnowledgeStore {
                 .toList();
     }
 
-
     private Document toSpringDocument(final VectorDocument doc) {
         final Map<String, Object> metadata = new HashMap<>(doc.metadata());
 
-        return new Document(doc.id(), doc.content(), metadata);
+        return new Document(
+                doc.id(),
+                doc.content(),
+                metadata
+        );
     }
-
     private VectorSearchResult toSearchResult(final Document doc) {
         return new VectorSearchResult(
                 doc.getId(),
@@ -67,7 +69,6 @@ class SpringAIKnowledgeStore implements KnowledgeStore {
                 doc.getMetadata()
         );
     }
-
 
     private String buildFilter(final VectorQuery query) {
         return "knowledgeBaseId == '" + query.knowledgeBaseId().asText() + "'";

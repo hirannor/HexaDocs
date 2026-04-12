@@ -21,6 +21,7 @@
         <java.version>21</java.version>
         <spring-ai.version>1.0.0-M6</spring-ai.version>
         <liquibase.version>4.33.0</liquibase.version>
+        <pdfbox.version>3.0.7</pdfbox.version>
     </properties>
 
     <dependencyManagement>
@@ -63,7 +64,7 @@
 
         <dependency>
             <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-openai-spring-boot-starter</artifactId>
+            <artifactId>spring-ai-ollama-spring-boot-starter</artifactId>
         </dependency>
 
         <dependency>
@@ -80,6 +81,12 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>${pdfbox.version}</version>
         </dependency>
 
         <dependency>

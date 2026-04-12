@@ -31,15 +31,27 @@ public class DocumentTextEntity {
     protected DocumentTextEntity() {
     }
 
-    public Long getId() {
+    public Long id() {
         return id;
+    }
+
+    public void setId(final Long id) {
+        this.id = id;
     }
 
     public String getDocumentId() {
         return documentId;
     }
 
+    public void setDocumentId(final String documentId) {
+        this.documentId = documentId;
+    }
+
     public String getContent() {
         return content;
+    }
+
+    public void setContent(final String content) {
+        this.content = content;
     }
 }

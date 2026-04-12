@@ -1,5 +1,6 @@
 package io.github.hirannor.hexadocs.application.document.service;
 
+import io.github.hirannor.hexadocs.application.document.port.DocumentFile;
 import io.github.hirannor.hexadocs.application.document.port.DocumentStorage;
 import io.github.hirannor.hexadocs.application.document.usecase.DocumentUploading;
 import io.github.hirannor.hexadocs.domain.document.*;
@@ -50,8 +51,7 @@ class DocumentUploadService implements DocumentUploading {
 
         documentStorage.store(
                 id,
-                content,
-                command.contentType()
+                DocumentFile.of(command.name(), command.contentType(), content)
         );
 
         document.events()

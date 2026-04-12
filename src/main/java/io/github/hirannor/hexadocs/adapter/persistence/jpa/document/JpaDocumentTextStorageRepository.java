@@ -2,22 +2,36 @@ package io.github.hirannor.hexadocs.adapter.persistence.jpa.document;
 
 import io.github.hirannor.hexadocs.application.document.port.DocumentTextStorage;
 import io.github.hirannor.hexadocs.domain.document.DocumentId;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@Component
+@Repository
+@Transactional
 class JpaDocumentTextStorageRepository implements DocumentTextStorage {
-    JpaDocumentTextStorageRepository() {
+
+    private final DocumentTextSpringDataJpaRepository documentTexts;
+
+    JpaDocumentTextStorageRepository(final DocumentTextSpringDataJpaRepository documentTexts) {
+        this.documentTexts = documentTexts;
     }
 
     @Override
     public void save(final DocumentId id, final String text) {
+        final String documentId = id.asText();
 
+        final DocumentTextEntity entity = new DocumentTextEntity();
+        entity.setDocumentId(documentId);
+        entity.setContent(text);
+
+        documentTexts.save(entity);
     }
 
     @Override
     public Optional<String> load(final DocumentId id) {
-        return Optional.empty();
+        return documentTexts
+                .findByDocumentId(id.asText())
+                .map(DocumentTextEntity::getContent);
     }
 }

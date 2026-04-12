@@ -23,12 +23,12 @@ spring:
     hibernate:
       ddl-auto: validate
   ai:
-    openai:
-      api-key: # insert here your api key
+    ollama:
+      base-url: http://localhost:11434
     vectorstore:
       pgvector:
         initialize-schema: true
-        dimensions: 1536
+        dimensions: 768
         index-type: hnsw
   application:
     name: HexaDocs
@@ -46,3 +46,6 @@ adapter:
   file: local-file-system-storage
   chunking: simple-text
   extraction: pdf-text
+
+storage:
+  local-file-system-path: # INSERT HERE YOUR LOCAL PATH

@@ -16,4 +16,5 @@ public interface DocumentMetadataRepository {
     boolean existsById(final DocumentId id);
 
     void deleteById(final DocumentId id);
+
 }

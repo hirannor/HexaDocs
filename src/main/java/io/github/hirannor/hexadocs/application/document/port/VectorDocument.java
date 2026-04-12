@@ -9,6 +9,9 @@ import java.util.UUID;
 
 public record VectorDocument(
         String id,
+        String chunkId,
+        String chunkHash,
+        int chunkOrder,
         DocumentId documentId,
         KnowledgeBaseId knowledgeBaseId,
         String content,
@@ -20,15 +23,38 @@ public record VectorDocument(
     }
 
     public static final class Builder {
-
         private String id = UUID.randomUUID().toString();
+
+        private String chunkId;
+        private String chunkHash;
+        private Integer chunkOrder;
+
         private DocumentId documentId;
         private KnowledgeBaseId knowledgeBaseId;
         private String content;
+
         private final Map<String, Object> metadata = new HashMap<>();
 
         public Builder id(final String id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder chunkId(final String chunkId) {
+            this.chunkId = chunkId;
+            metadata.put("chunkId", chunkId);
+            return this;
+        }
+
+        public Builder chunkHash(final String chunkHash) {
+            this.chunkHash = chunkHash;
+            metadata.put("chunkHash", chunkHash);
+            return this;
+        }
+
+        public Builder chunkOrder(final int chunkOrder) {
+            this.chunkOrder = chunkOrder;
+            metadata.put("chunkOrder", chunkOrder);
             return this;
         }
 
@@ -60,18 +86,32 @@ public record VectorDocument(
         }
 
         public VectorDocument assemble() {
+
+            if (chunkId == null || chunkId.isBlank()) {
+                throw new IllegalStateException("chunkId is required");
+            }
+
+            if (chunkHash == null || chunkHash.isBlank()) {
+                throw new IllegalStateException("chunkHash is required");
+            }
+
             if (documentId == null) {
                 throw new IllegalStateException("documentId is required");
             }
+
             if (knowledgeBaseId == null) {
                 throw new IllegalStateException("knowledgeBaseId is required");
             }
+
             if (content == null || content.isBlank()) {
                 throw new IllegalStateException("content is required");
             }
 
             return new VectorDocument(
                     id,
+                    chunkId,
+                    chunkHash,
+                    chunkOrder != null ? chunkOrder : -1,
                     documentId,
                     knowledgeBaseId,
                     content,

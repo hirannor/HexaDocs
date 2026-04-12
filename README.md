@@ -30,3 +30,78 @@ Each document becomes:
 
 - A set of semantic chunks
 - Indexed
+
+---
+
+## 🧩 Core Capabilities
+
+### 📄 Document Ingestion
+
+- Upload documents (PDF, text, etc.)
+- Extract and normalize content
+- Split into semantic chunks
+
+### 🧠 Embeddings
+
+- Generate embeddings using:
+    - `nomic-embed-text` (Ollama)
+- Store vectors in `pgvector`
+
+### 🔎 Semantic Search (RAG)
+
+- Query embedding generation
+- Vector similarity search
+- Context retrieval for LLM
+
+### 💬 AI Chat
+
+- Uses `llama3` via Ollama
+- Context-aware answers (RAG-based)
+
+### ⚡ Event-Driven Pipeline
+
+- RabbitMQ-based async processing
+- Decoupled ingestion and embedding pipeline
+
+---
+
+## 🐳 Infrastructure
+
+HexaDocs runs fully locally using Docker Compose.
+
+### 📦 PostgreSQL + pgvector
+
+Stores:
+
+- Documents metadata
+- Chunks
+- Vector embeddings
+
+### 🧠 Ollama (Local AI runtime)
+
+Used for:
+
+- Chat completion (LLM responses)
+- Embedding generation
+
+Preloaded models:
+
+- `llama3` -> chat model
+- `nomic-embed-text` -> embedding model
+
+### 📬 RabbitMQ
+
+Used for:
+
+- Document ingestion events
+- Async processing pipeline
+- Decoupled system communication
+
+---
+
+## 🚀 Running the system
+
+Start all services:
+
+```bash
+docker-compose up -d

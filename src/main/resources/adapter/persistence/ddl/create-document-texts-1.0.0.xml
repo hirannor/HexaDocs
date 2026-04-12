@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="002-create-document-texts" author="hirannor">
+        <createTable tableName="HEX_DOCUMENT_TEXTS">
+
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="DOCUMENT_ID" type="VARCHAR(64)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="CONTENT" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="CREATED_AT" type="TIMESTAMP"/>
+            <column name="UPDATED_AT" type="TIMESTAMP"/>
+
+        </createTable>
+
+        <createIndex tableName="HEX_DOCUMENT_TEXTS"
+                     indexName="IDX_DOC_TEXT_DOC_ID">
+            <column name="DOCUMENT_ID"/>
+        </createIndex>
+
+        <createSequence
+                sequenceName="document_text_seq"
+                startValue="1"
+                incrementBy="5"/>
+
+
+    </changeSet>
+</databaseChangeLog>

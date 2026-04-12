@@ -3,7 +3,7 @@ package io.github.hirannor.hexadocs.application.document.port;
 import io.github.hirannor.hexadocs.domain.document.DocumentId;
 
 public interface DocumentStorage {
-    void store(final DocumentId documentId, final byte[] content, final String contentType);
+    void store(final DocumentId documentId, final DocumentFile document);
 
     byte[] loadById(final DocumentId documentId);
 

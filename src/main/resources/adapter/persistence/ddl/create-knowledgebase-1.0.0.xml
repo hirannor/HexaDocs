@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="004-create-knowledge-bases" author="hirannor">
+
+        <createTable tableName="HEX_KNOWLEDGE_BASES">
+
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="KNOWLEDGE_BASE_ID" type="VARCHAR(64)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <createIndex tableName="HEX_KNOWLEDGE_BASES"
+                     indexName="IDX_KB_KNOWLEDGE_BASE_ID">
+            <column name="KNOWLEDGE_BASE_ID"/>
+        </createIndex>
+
+        <createSequence
+                sequenceName="kb_seq"
+                startValue="1"
+                incrementBy="5"/>
+
+    </changeSet>
+
+
+</databaseChangeLog>
