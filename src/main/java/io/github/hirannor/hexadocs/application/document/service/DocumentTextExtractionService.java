@@ -34,54 +34,62 @@ class DocumentTextExtractionService implements DocumentTextExtracting {
 
     @Override
     public void extract(final ExtractDocumentText command) {
+        try {
+            log.info("Starting document text extraction | documentId={} | ingestionJobId={} | knowledgeBaseId={}",
+                    command.documentId(),
+                    command.ingestionJobId(),
+                    command.knowledgeBaseId()
+            );
 
-        log.info("Starting document text extraction | documentId={} | ingestionJobId={} | knowledgeBaseId={}",
-                command.documentId(),
-                command.ingestionJobId(),
-                command.knowledgeBaseId()
-        );
+            final byte[] file = storage.loadById(command.documentId())
+                    .orElseThrow(() -> new IllegalStateException(
+                            "Document not found: " + command.documentId()
+                    ));
 
-        final byte[] file = storage.loadById(command.documentId())
-                .orElseThrow(() -> new IllegalStateException(
-                        "Document not found: " + command.documentId()
-                ));
+            log.info("Document loaded from storage | documentId={} | sizeBytes={}",
+                    command.documentId(),
+                    file != null ? file.length : 0
+            );
 
-        log.info("Document loaded from storage | documentId={} | sizeBytes={}",
-                command.documentId(),
-                file != null ? file.length : 0
-        );
+            log.info("Extracting text from document | documentId={}", command.documentId());
 
-        log.info("Extracting text from document | documentId={}", command.documentId());
+            final String text = extractor.extract(file);
 
-        final String text = extractor.extract(file);
+            log.info("Text extraction completed | documentId={} | textLength={}",
+                    command.documentId(),
+                    text != null ? text.length() : 0
+            );
 
-        log.info("Text extraction completed | documentId={} | textLength={}",
-                command.documentId(),
-                text != null ? text.length() : 0
-        );
+            if (text == null || text.isBlank()) {
+                log.info("Extracted text is empty | documentId={}", command.documentId());
+                throw new IllegalStateException("Empty extracted text");
+            }
 
-        if (text == null || text.isBlank()) {
-            log.info("Extracted text is empty | documentId={}", command.documentId());
-            throw new IllegalStateException("Empty extracted text");
+            log.info("Saving extracted text | documentId={}", command.documentId());
+
+            documentTextStorage.save(command.documentId(), text);
+
+            log.info("Publishing DocumentTextExtracted event | documentId={} | ingestionJobId={}",
+                    command.documentId(),
+                    command.ingestionJobId()
+            );
+
+            messages.publish(
+                    DocumentTextExtracted.record(
+                            command.ingestionJobId(),
+                            command.documentId(),
+                            command.knowledgeBaseId()
+                    )
+            );
+
+            log.info("Document text extraction completed successfully | documentId={}", command.documentId());
+        } catch (final Exception e) {
+            messages.publish(
+                    DocumentTextExtractionFailed.record(
+                            command.ingestionJobId(),
+                            e.getMessage()
+                    )
+            );
         }
-
-        log.info("Saving extracted text | documentId={}", command.documentId());
-
-        documentTextStorage.save(command.documentId(), text);
-
-        log.info("Publishing DocumentTextExtracted event | documentId={} | ingestionJobId={}",
-                command.documentId(),
-                command.ingestionJobId()
-        );
-
-        messages.publish(
-                DocumentTextExtracted.record(
-                        command.ingestionJobId(),
-                        command.documentId(),
-                        command.knowledgeBaseId()
-                )
-        );
-
-        log.info("Document text extraction completed successfully | documentId={}", command.documentId());
     }
 }

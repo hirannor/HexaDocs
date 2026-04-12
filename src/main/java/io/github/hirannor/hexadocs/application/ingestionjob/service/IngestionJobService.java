@@ -1,6 +1,8 @@
 package io.github.hirannor.hexadocs.application.ingestionjob.service;
 
+import io.github.hirannor.hexadocs.application.ingestionjob.usecase.FailIngestionJob;
 import io.github.hirannor.hexadocs.application.ingestionjob.usecase.IngestionJobCompleting;
+import io.github.hirannor.hexadocs.application.ingestionjob.usecase.IngestionJobFailing;
 import io.github.hirannor.hexadocs.application.ingestionjob.usecase.IngestionJobStarting;
 import io.github.hirannor.hexadocs.domain.ingestionjob.IngestionJob;
 import io.github.hirannor.hexadocs.domain.ingestionjob.IngestionJobId;
@@ -15,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-class IngestionJobService implements IngestionJobStarting, IngestionJobCompleting {
+class IngestionJobService implements IngestionJobStarting, IngestionJobCompleting, IngestionJobFailing {
 
     private static final Logger log = LoggerFactory.getLogger(IngestionJobService.class);
 
@@ -64,4 +66,19 @@ class IngestionJobService implements IngestionJobStarting, IngestionJobCompletin
         log.info("Ingestion job completed | jobId={}", jobId.asText());
     }
 
+    @Override
+    public void fail(final FailIngestionJob command) {
+        log.info("Failing ingestion job | jobId={}", command.ingestionJobId().asText());
+
+        final IngestionJob job = ingestionJobs.findById(command.ingestionJobId())
+                .orElseThrow(() -> new IllegalStateException("Job not found: " + command.ingestionJobId()));
+
+        job.fail(command.error());
+
+        ingestionJobs.save(job);
+
+        job.events().forEach(messages::publish);
+
+        log.info("Ingestion job failed | jobId={}", command.ingestionJobId().asText());
+    }
 }

@@ -8,6 +8,7 @@ public class IngestionJobBuilder {
     private DocumentId documentId;
     private KnowledgeBaseId knowledgeBaseId;
     private JobStatus status;
+    private String error;
 
     public IngestionJobBuilder id(final IngestionJobId id) {
         this.id = id;
@@ -24,13 +25,17 @@ public class IngestionJobBuilder {
         return this;
     }
 
-
     public IngestionJobBuilder status(final JobStatus status) {
         this.status = status;
         return this;
     }
 
+    public IngestionJobBuilder error(final String error) {
+        this.error = error;
+        return this;
+    }
+
     public IngestionJob create() {
-        return new IngestionJob(id, documentId, knowledgeBaseId, status);
+        return new IngestionJob(id, documentId, knowledgeBaseId, status, error);
     }
 }

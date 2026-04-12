@@ -2,9 +2,6 @@ package io.github.hirannor.hexadocs.adapter.persistence.jpa.ingestionjob;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name = "HEX_INGESTION_JOBS")
 public class IngestionJobEntity {
@@ -36,13 +33,8 @@ public class IngestionJobEntity {
     @Column(name = "STATUS", nullable = false)
     private JobStatusEntity status;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "HEX_INGESTION_JOB_ERRORS",
-            joinColumns = @JoinColumn(name = "JOB_PK")
-    )
     @Column(name = "ERROR")
-    private List<String> errors = new ArrayList<>();
+    private String error;
 
     public IngestionJobEntity() {
     }
@@ -87,11 +79,11 @@ public class IngestionJobEntity {
         this.status = status;
     }
 
-    public List<String> errors() {
-        return errors;
+    public String error() {
+        return error;
     }
 
-    public void setErrors(final List<String> errors) {
-        this.errors = errors;
+    public void setError(final String error) {
+        this.error = error;
     }
 }

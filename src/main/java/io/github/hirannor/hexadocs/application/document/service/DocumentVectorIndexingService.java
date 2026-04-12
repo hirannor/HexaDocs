@@ -43,53 +43,62 @@ class DocumentVectorIndexingService implements DocumentVectorIndexing {
 
     @Override
     public void index(final IndexDocument command) {
-
         final DocumentId documentId = command.documentId();
         final KnowledgeBaseId knowledgeBaseId = command.knowledgeBaseId();
 
-        log.info("Starting vector indexing | documentId={}", documentId.asText());
+        try {
+            log.info("Starting vector indexing | documentId={}", documentId.asText());
 
-        final String extractedText = documentTextStorage.load(documentId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "Extracted text not found for documentId: " + documentId
-                ));
+            final String extractedText = documentTextStorage.load(documentId)
+                    .orElseThrow(() -> new IllegalStateException(
+                            "Extracted text not found for documentId: " + documentId
+                    ));
 
-        final List<Chunk> chunks = textChunker.chunk(extractedText, documentId);
+            final List<Chunk> chunks = textChunker.chunk(extractedText, documentId);
 
-        if (chunks.isEmpty()) {
-            throw new IllegalStateException("No chunks generated");
+            if (chunks.isEmpty()) {
+                throw new IllegalStateException("No chunks generated");
+            }
+
+            log.info("Chunks created | documentId={} | count={}",
+                    documentId.asText(),
+                    chunks.size());
+
+            final List<List<Chunk>> batches = batch(chunks, BATCH_SIZE);
+
+            int totalStored = 0;
+
+            for (final List<Chunk> batch : batches) {
+
+                final List<VectorDocument> vectors =
+                        this.vectors.create(batch, documentId, knowledgeBaseId);
+
+                knowledgeStore.store(vectors);
+
+                totalStored += vectors.size();
+            }
+
+            log.info("Vector indexing completed | documentId={} | storedVectors={}",
+                    documentId.asText(),
+                    totalStored);
+
+            messages.publish(
+                    DocumentVectorIndexed.record(
+                            command.ingestionJobId(),
+                            documentId,
+                            knowledgeBaseId,
+                            totalStored
+                    )
+            );
+
+        } catch (final Exception e) {
+            messages.publish(
+                    DocumentVectorIndexingFailed.record(
+                            command.ingestionJobId(),
+                            e.getMessage()
+                    )
+            );
         }
-
-        log.info("Chunks created | documentId={} | count={}",
-                documentId.asText(),
-                chunks.size());
-
-        final List<List<Chunk>> batches = batch(chunks, BATCH_SIZE);
-
-        int totalStored = 0;
-
-        for (final List<Chunk> batch : batches) {
-
-            final List<VectorDocument> vectors =
-                    this.vectors.create(batch, documentId, knowledgeBaseId);
-
-            knowledgeStore.store(vectors);
-
-            totalStored += vectors.size();
-        }
-
-        log.info("Vector indexing completed | documentId={} | storedVectors={}",
-                documentId.asText(),
-                totalStored);
-
-        messages.publish(
-                DocumentVectorIndexed.record(
-                        command.ingestionJobId(),
-                        documentId,
-                        knowledgeBaseId,
-                        totalStored
-                )
-        );
     }
 
     private List<List<Chunk>> batch(final List<Chunk> chunks, final int size) {

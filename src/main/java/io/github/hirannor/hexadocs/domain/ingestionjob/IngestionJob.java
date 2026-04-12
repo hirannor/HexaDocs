@@ -4,9 +4,6 @@ import io.github.hirannor.hexadocs.domain.document.DocumentId;
 import io.github.hirannor.hexadocs.domain.knowledgebase.KnowledgeBaseId;
 import io.github.hirannor.hexadocs.infrastructure.aggregate.AggregateRoot;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 public class IngestionJob extends AggregateRoot {
@@ -15,18 +12,19 @@ public class IngestionJob extends AggregateRoot {
     private final DocumentId documentId;
     private final KnowledgeBaseId knowledgeBaseId;
 
-    private final List<String> errors = new ArrayList<>();
-
+    private String error;
     private JobStatus status;
 
     IngestionJob(final IngestionJobId id,
                  final DocumentId documentId,
                  final KnowledgeBaseId knowledgeBaseId,
-                 final JobStatus status) {
+                 final JobStatus status,
+                 final String error) {
         this.id = Objects.requireNonNull(id);
         this.documentId = Objects.requireNonNull(documentId);
         this.knowledgeBaseId = Objects.requireNonNull(knowledgeBaseId);
         this.status = Objects.requireNonNull(status);
+        this.error = error;
     }
 
     public static IngestionJobBuilder empty() {
@@ -69,8 +67,8 @@ public class IngestionJob extends AggregateRoot {
             throw new IllegalStateException("Job not running: " + id);
         }
 
-        status = JobStatus.FAILED;
-        errors.add(error);
+        this.status = JobStatus.FAILED;
+        this.error = error;
     }
 
     public IngestionJobId id() {
@@ -89,7 +87,7 @@ public class IngestionJob extends AggregateRoot {
         return status;
     }
 
-    public List<String> errors() {
-        return Collections.unmodifiableList(errors);
+    public String error() {
+        return error;
     }
 }

@@ -37,6 +37,9 @@ public class IngestionJobModeller {
                 .map(mapToEntity)
                 .ifPresent(entity::setStatus);
 
+        Optional.ofNullable(domain.error())
+                .ifPresent(entity::setError);
+
         return entity;
     }
 }

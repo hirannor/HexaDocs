@@ -2,8 +2,12 @@ package io.github.hirannor.hexadocs.application.ingestionpipeline;
 
 
 import io.github.hirannor.hexadocs.application.document.service.DocumentTextExtracted;
+import io.github.hirannor.hexadocs.application.document.service.DocumentTextExtractionFailed;
+import io.github.hirannor.hexadocs.application.document.service.DocumentVectorIndexingFailed;
 import io.github.hirannor.hexadocs.application.document.usecase.*;
+import io.github.hirannor.hexadocs.application.ingestionjob.usecase.FailIngestionJob;
 import io.github.hirannor.hexadocs.application.ingestionjob.usecase.IngestionJobCompleting;
+import io.github.hirannor.hexadocs.application.ingestionjob.usecase.IngestionJobFailing;
 import io.github.hirannor.hexadocs.application.ingestionjob.usecase.IngestionJobStarting;
 import io.github.hirannor.hexadocs.domain.document.events.DocumentRegistered;
 import io.github.hirannor.hexadocs.domain.ingestionjob.IngestionJobStarted;
@@ -15,15 +19,18 @@ import org.springframework.stereotype.Component;
 public class IngestionPipelineEventHandler {
     private final IngestionJobStarting ingestionJob;
     private final IngestionJobCompleting ingestionJobCompleting;
+    private final IngestionJobFailing ingestionJobFailing;
     private final DocumentVectorIndexing documentVectorIndexing;
     private final DocumentTextExtracting document;
 
     public IngestionPipelineEventHandler(final IngestionJobStarting ingestionJob,
                                          final IngestionJobCompleting ingestionJobCompleting,
+                                         final IngestionJobFailing ingestionJobFailing,
                                          final DocumentVectorIndexing documentVectorIndexing,
                                          final DocumentTextExtracting document) {
         this.ingestionJob = ingestionJob;
         this.ingestionJobCompleting = ingestionJobCompleting;
+        this.ingestionJobFailing = ingestionJobFailing;
         this.documentVectorIndexing = documentVectorIndexing;
         this.document = document;
     }
@@ -46,6 +53,20 @@ public class IngestionPipelineEventHandler {
     @EventListener
     void handle(final DocumentVectorIndexed event) {
         ingestionJobCompleting.complete(event.ingestionJobId());
+    }
+
+    @EventListener
+    void handle(final DocumentVectorIndexingFailed event) {
+        ingestionJobFailing.fail(
+                FailIngestionJob.issue(event.ingestionJobId(), event.error())
+        );
+    }
+
+    @EventListener
+    void handle(final DocumentTextExtractionFailed event) {
+        ingestionJobFailing.fail(
+                FailIngestionJob.issue(event.ingestionJobId(), event.error())
+        );
     }
 
 }

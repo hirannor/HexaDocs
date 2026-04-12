@@ -26,6 +26,7 @@ public class IngestionJobEntityToDomainMapper implements Function<IngestionJobEn
                 .documentId(DocumentId.from(entity.getDocumentId()))
                 .kbId(KnowledgeBaseId.from(entity.getKnowledgeBaseId()))
                 .status(mapToDomain.apply(entity.status()))
+                .error(entity.error())
                 .create();
     }
 }
