@@ -2,6 +2,8 @@ package io.github.hirannor.hexadocs.adapter.persistence.jpa.document;
 
 import jakarta.persistence.*;
 
+import java.time.Instant;
+
 @Entity
 @Table(name = "HEX_DOCUMENT_TEXTS")
 public class DocumentTextEntity {
@@ -28,6 +30,9 @@ public class DocumentTextEntity {
     @Basic(fetch = FetchType.LAZY)
     private String content;
 
+    @Column(name = "CREATED_AT", nullable = false)
+    private Instant createdAt;
+
     protected DocumentTextEntity() {
     }
 
@@ -53,5 +58,13 @@ public class DocumentTextEntity {
 
     public void setContent(final String content) {
         this.content = content;
+    }
+
+    public Instant createdAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 }

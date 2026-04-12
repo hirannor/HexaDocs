@@ -5,6 +5,7 @@ import io.github.hirannor.hexadocs.adapter.persistence.jpa.ingestionjob.JobStatu
 import io.github.hirannor.hexadocs.domain.ingestionjob.IngestionJob;
 import io.github.hirannor.hexadocs.domain.ingestionjob.JobStatus;
 
+import java.time.Instant;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -39,6 +40,8 @@ public class IngestionJobModeller {
 
         Optional.ofNullable(domain.error())
                 .ifPresent(entity::setError);
+
+        entity.setCreatedAt(Instant.now());
 
         return entity;
     }

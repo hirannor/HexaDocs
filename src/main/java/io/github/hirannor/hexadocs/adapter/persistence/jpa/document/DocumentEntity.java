@@ -2,6 +2,8 @@ package io.github.hirannor.hexadocs.adapter.persistence.jpa.document;
 
 import jakarta.persistence.*;
 
+import java.time.Instant;
+
 @Entity
 @Table(name = "HEX_DOCUMENTS")
 public class DocumentEntity {
@@ -30,6 +32,9 @@ public class DocumentEntity {
 
     @Column(name = "FILE_REFERENCE")
     private String fileReference;
+
+    @Column(name = "CREATED_AT", nullable = false)
+    private Instant createdAt;
 
     public DocumentEntity() {
     }
@@ -72,5 +77,13 @@ public class DocumentEntity {
 
     public void setFileReference(final String fileReference) {
         this.fileReference = fileReference;
+    }
+
+    public Instant createdAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 }

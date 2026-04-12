@@ -2,6 +2,8 @@ package io.github.hirannor.hexadocs.adapter.persistence.jpa.ingestionjob;
 
 import jakarta.persistence.*;
 
+import java.time.Instant;
+
 @Entity
 @Table(name = "HEX_INGESTION_JOBS")
 public class IngestionJobEntity {
@@ -35,6 +37,9 @@ public class IngestionJobEntity {
 
     @Column(name = "ERROR")
     private String error;
+
+    @Column(name = "CREATED_AT", nullable = false)
+    private Instant createdAt;
 
     public IngestionJobEntity() {
     }
@@ -85,5 +90,13 @@ public class IngestionJobEntity {
 
     public void setError(final String error) {
         this.error = error;
+    }
+
+    public Instant createdAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 }

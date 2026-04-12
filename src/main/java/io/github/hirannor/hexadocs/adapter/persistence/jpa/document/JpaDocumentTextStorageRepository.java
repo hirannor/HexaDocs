@@ -5,6 +5,7 @@ import io.github.hirannor.hexadocs.domain.document.DocumentId;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Optional;
 
 @Repository
@@ -24,6 +25,7 @@ class JpaDocumentTextStorageRepository implements DocumentTextStorage {
         final DocumentTextEntity entity = new DocumentTextEntity();
         entity.setDocumentId(documentId);
         entity.setContent(text);
+        entity.setCreatedAt(Instant.now());
 
         documentTexts.save(entity);
     }

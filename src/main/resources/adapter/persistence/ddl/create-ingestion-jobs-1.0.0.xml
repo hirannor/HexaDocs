@@ -31,10 +31,7 @@
                 <constraints nullable="true"/>
             </column>
 
-
             <column name="CREATED_AT" type="TIMESTAMP"/>
-            <column name="UPDATED_AT" type="TIMESTAMP"/>
-
         </createTable>
 
         <createIndex tableName="HEX_INGESTION_JOBS"
