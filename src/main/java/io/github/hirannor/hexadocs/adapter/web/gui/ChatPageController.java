@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 class ChatPageController {
     ChatPageController() {
-        System.out.println("ChatPageController");
     }
 
     @GetMapping("/")

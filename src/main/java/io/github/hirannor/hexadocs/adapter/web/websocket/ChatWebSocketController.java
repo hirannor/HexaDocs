@@ -9,22 +9,22 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class ChatWebSocketController {
+class ChatWebSocketController {
 
-    private final QuestionAsking chatService;
+    private final QuestionAsking question;
     private final SimpMessagingTemplate messagingTemplate;
 
-    public ChatWebSocketController(
-            QuestionAsking chatService,
+    ChatWebSocketController(
+            QuestionAsking question,
             SimpMessagingTemplate messagingTemplate
     ) {
-        this.chatService = chatService;
+        this.question = question;
         this.messagingTemplate = messagingTemplate;
     }
 
     @MessageMapping("/chat.ask")
     public void ask(final ChatQuestionMessage message) {
-        final Answer answer = chatService.ask(
+        final Answer answer = question.ask(
                  AskQuestion.issue(
                         KnowledgeBaseId.from(message.getKnowledgeBaseId()),
                         message.getQuestion()
