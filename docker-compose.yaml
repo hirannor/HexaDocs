@@ -46,9 +46,16 @@ services:
     entrypoint: >
       sh -c "
       echo 'Waiting for Ollama...' &&
-      sleep 5 &&
-      curl http://ollama:11434/api/pull -d '{\"name\": \"llama3\"}' &&
+      until curl -s http://ollama:11434/api/tags > /dev/null; do
+        sleep 2;
+      done &&
+      
+      echo 'Pulling mistral...' &&
+      curl http://ollama:11434/api/pull -d '{\"name\": \"mistral\"}' &&
+          
+      echo 'Pulling nomic-embed-text...' &&
       curl http://ollama:11434/api/pull -d '{\"name\": \"nomic-embed-text\"}' &&
+      
       echo 'Models preloaded'
       "
 

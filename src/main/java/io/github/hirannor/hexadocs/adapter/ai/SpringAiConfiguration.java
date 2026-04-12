@@ -23,7 +23,7 @@ public class SpringAiConfiguration {
     ChatClient chatClient(ChatClient.Builder builder) {
         return builder
                 .defaultOptions(ChatOptions.builder()
-                        .model("llama3")
+                        .model("mistral")
                         .temperature(0.2)
                         .maxTokens(500)
                         .build())

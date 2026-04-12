@@ -37,9 +37,9 @@ Each document becomes:
 
 ### 📄 Document Ingestion
 
-- Upload documents (PDF, text, etc.)
+- Upload documents (PDF)
 - Extract and normalize content
-- Split into semantic chunks
+- Split into chunks
 
 ### 🧠 Embeddings
 
@@ -55,7 +55,7 @@ Each document becomes:
 
 ### 💬 AI Chat
 
-- Uses `llama3` via Ollama
+- Uses `mistral` via Ollama
 - Context-aware answers (RAG-based)
 
 ### ⚡ Event-Driven Pipeline

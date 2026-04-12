@@ -18,13 +18,15 @@ class KnowledgeBaseController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<KnowledgeBaseId> create(@RequestBody CreateKnowledgeBaseRequest request) {
+    public ResponseEntity<CreateKnowledgeBaseResponse> create(@RequestBody CreateKnowledgeBaseRequest request) {
         final KnowledgeBaseId knowledgeBaseId = knowledgeBase.create(
-                CreateKnowledgeBase.issue(request.name())
+                CreateKnowledgeBase.issue(request.getName())
         );
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(knowledgeBaseId);
+        return ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body(new CreateKnowledgeBaseResponse(knowledgeBaseId.asText())
+        );
     }
 
 }

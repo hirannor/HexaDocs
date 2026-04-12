@@ -1,5 +1,6 @@
-package io.github.hirannor.hexadocs.adapter.persistence.jpa.document;
+package io.github.hirannor.hexadocs.adapter.persistence.jpa.document.mapping;
 
+import io.github.hirannor.hexadocs.adapter.persistence.jpa.document.DocumentEntity;
 import io.github.hirannor.hexadocs.domain.document.Document;
 import io.github.hirannor.hexadocs.domain.document.DocumentId;
 import io.github.hirannor.hexadocs.domain.document.FileReference;

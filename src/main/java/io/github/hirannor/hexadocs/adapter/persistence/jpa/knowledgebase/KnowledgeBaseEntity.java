@@ -26,19 +26,30 @@ public class KnowledgeBaseEntity {
     @Column(name = "NAME", nullable = false)
     private String name;
 
-    protected KnowledgeBaseEntity() {
+    public KnowledgeBaseEntity() {
     }
 
     public Long getId() {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getKnowledgeBaseId() {
         return knowledgeBaseId;
+    }
+
+    public void setKnowledgeBaseId(String knowledgeBaseId) {
+        this.knowledgeBaseId = knowledgeBaseId;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 }

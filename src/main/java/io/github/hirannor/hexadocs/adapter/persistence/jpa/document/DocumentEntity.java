@@ -31,7 +31,7 @@ public class DocumentEntity {
     @Column(name = "FILE_REFERENCE")
     private String fileReference;
 
-    protected DocumentEntity() {
+    public DocumentEntity() {
     }
 
     public Long id() {

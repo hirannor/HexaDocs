@@ -48,4 +48,4 @@ adapter:
   extraction: pdf-text
 
 storage:
-  local-file-system-path: # INSERT HERE YOUR LOCAL PATH
+  local-file-system-path: /storage/documents

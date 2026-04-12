@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 @Component
@@ -49,12 +50,12 @@ class LocalFileSystemDocumentStorage implements DocumentStorage {
     }
 
     @Override
-    public byte[] loadById(final DocumentId documentId) {
+    public Optional<byte[]> loadById(final DocumentId documentId) {
         try {
             final Path dir = Paths.get(rootPath).resolve(documentId.asText());
 
             if (!Files.exists(dir)) {
-                throw new IllegalStateException("Document folder not found: " + documentId);
+                return Optional.empty();
             }
 
             try (var stream = Files.list(dir)) {
@@ -62,8 +63,7 @@ class LocalFileSystemDocumentStorage implements DocumentStorage {
                         .filter(Files::isRegularFile)
                         .filter(this::isPdfExtension)
                         .findFirst()
-                        .map(this::readToBytes)
-                        .orElseThrow(failBecausePdfFileWasNotFoundBy(documentId));
+                        .map(this::readToBytes);
             }
 
         } catch (IOException e) {

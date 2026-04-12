@@ -4,6 +4,7 @@ import io.github.hirannor.hexadocs.application.document.port.DocumentFile;
 import io.github.hirannor.hexadocs.application.document.port.DocumentStorage;
 import io.github.hirannor.hexadocs.application.document.usecase.DocumentUploading;
 import io.github.hirannor.hexadocs.domain.document.*;
+import io.github.hirannor.hexadocs.domain.knowledgebase.KnowledgeBaseRepository;
 import io.github.hirannor.hexadocs.infrastructure.messaging.MessagePublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,26 +19,32 @@ class DocumentUploadService implements DocumentUploading {
     private static final Logger log = LoggerFactory.getLogger(DocumentUploadService.class);
 
     private final DocumentMetadataRepository documentMetadata;
+    private final KnowledgeBaseRepository knowledgeBases;
     private final DocumentStorage documentStorage;
     private final MessagePublisher messages;
 
     DocumentUploadService(final DocumentMetadataRepository documentMetadata,
+                          final KnowledgeBaseRepository knowledgeBases,
                           final DocumentStorage documentStorage,
                           final MessagePublisher messages) {
         this.documentMetadata = documentMetadata;
+        this.knowledgeBases = knowledgeBases;
         this.documentStorage = documentStorage;
         this.messages = messages;
     }
 
     @Override
     public DocumentId upload(final UploadDocument command, final byte[] content) {
-
         log.info("Uploading documentId | name={} | knowledgeBaseId={} | contentType={} | size={}",
                 command.name(),
                 command.knowledgeBaseId().asText(),
                 command.contentType(),
                 content != null ? content.length : 0
         );
+
+        knowledgeBases.findById(command.knowledgeBaseId())
+                .orElseThrow(() -> new IllegalStateException("Knowledge Base not found by id: " + command.knowledgeBaseId().asText()));
+
         final DocumentId id = DocumentId.generate();
 
         final Document document = Document.register(
