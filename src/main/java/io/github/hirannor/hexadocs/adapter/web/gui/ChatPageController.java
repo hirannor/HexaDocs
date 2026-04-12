@@ -9,7 +9,7 @@ class ChatPageController {
         System.out.println("ChatPageController");
     }
 
-    @GetMapping("/chat")
+    @GetMapping("/")
     public String chatPage() {
         return "chat";
     }
