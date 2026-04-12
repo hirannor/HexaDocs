@@ -65,40 +65,6 @@ Each document becomes:
 
 ---
 
-## 🐳 Infrastructure
-
-HexaDocs runs fully locally using Docker Compose.
-
-### 📦 PostgreSQL + pgvector
-
-Stores:
-
-- Documents metadata
-- Chunks
-- Vector embeddings
-
-### 🧠 Ollama (Local AI runtime)
-
-Used for:
-
-- Chat completion (LLM responses)
-- Embedding generation
-
-Preloaded models:
-
-- `llama3` -> chat model
-- `nomic-embed-text` -> embedding model
-
-### 📬 RabbitMQ
-
-Used for:
-
-- Document ingestion events
-- Async processing pipeline
-- Decoupled system communication
-
----
-
 ## 🚀 Running the system
 
 Start all services:
