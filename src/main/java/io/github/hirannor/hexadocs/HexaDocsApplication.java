@@ -6,7 +6,9 @@ import io.github.hirannor.hexadocs.adapter.extraction.pdf.PdfTextExtractionConfi
 import io.github.hirannor.hexadocs.adapter.file.localfilesystem.LocalFileSystemDocumentStorageConfiguration;
 import io.github.hirannor.hexadocs.adapter.messaging.eventbus.rabbit.RabbitMqMessagingConfiguration;
 import io.github.hirannor.hexadocs.adapter.persistence.jpa.JpaPersistenceConfiguration;
+import io.github.hirannor.hexadocs.adapter.web.gui.GuiConfiguration;
 import io.github.hirannor.hexadocs.adapter.web.rest.RestConfiguration;
+import io.github.hirannor.hexadocs.adapter.web.websocket.WebSocketConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,7 +22,9 @@ import org.springframework.context.annotation.Import;
         RabbitMqMessagingConfiguration.class,
         PdfTextExtractionConfiguration.class,
         NplTextChunkerConfiguration.class,
-        LocalFileSystemDocumentStorageConfiguration.class
+        LocalFileSystemDocumentStorageConfiguration.class,
+        WebSocketConfiguration.class,
+        GuiConfiguration.class,
 })
 @SpringBootApplication(
         exclude = {

@@ -1,0 +1,16 @@
+package io.github.hirannor.hexadocs.adapter.web.gui;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+class ChatPageController {
+    ChatPageController() {
+        System.out.println("ChatPageController");
+    }
+
+    @GetMapping("/chat")
+    public String chatPage() {
+        return "chat";
+    }
+}
