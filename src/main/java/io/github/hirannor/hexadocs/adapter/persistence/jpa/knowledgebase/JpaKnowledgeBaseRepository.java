@@ -1,4 +1,4 @@
-package io.github.hirannor.hexadocs.adapter.persistence.jpa;
+package io.github.hirannor.hexadocs.adapter.persistence.jpa.knowledgebase;
 
 import io.github.hirannor.hexadocs.domain.knowledgebase.KnowledgeBase;
 import io.github.hirannor.hexadocs.domain.knowledgebase.KnowledgeBaseId;

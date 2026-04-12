@@ -11,10 +11,6 @@ import java.util.*;
 @Component
 class DefaultVectorDocumentFactory implements VectorDocumentFactory {
 
-    private static final String CHUNK_INDEX = "chunkIndex";
-    private static final String DOCUMENT_ID = "documentId";
-    private static final String KNOWLEDGE_BASE_ID = "knowledgeBaseId";
-
     @Override
     public List<VectorDocument> create(
             final List<Chunk> chunks,
@@ -23,21 +19,13 @@ class DefaultVectorDocumentFactory implements VectorDocumentFactory {
     ) {
         final List<VectorDocument> result = new ArrayList<>();
 
-        int index = 0;
-
         for (final Chunk chunk : chunks) {
-            final Map<String, Object> metadata = new HashMap<>();
-            metadata.put(CHUNK_INDEX, index++);
-            metadata.put(DOCUMENT_ID, documentId.asText());
-            metadata.put(KNOWLEDGE_BASE_ID, knowledgeBaseId.asText());
-
             result.add(
                     VectorDocument.empty()
                             .id(UUID.randomUUID().toString())
                             .documentId(documentId)
                             .knowledgeBaseId(knowledgeBaseId)
                             .content(chunk.content())
-                            .metadata(metadata)
                             .assemble()
             );
         }

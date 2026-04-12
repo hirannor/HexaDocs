@@ -28,7 +28,6 @@ public class RabbitConfigurationProperties {
         this.queue = queue;
     }
 
-
     public Retry getRetry() {
         return retry;
     }
@@ -36,7 +35,6 @@ public class RabbitConfigurationProperties {
     public void setRetry(Retry retry) {
         this.retry = retry;
     }
-
 
     public static class Retry {
         private int maxAttempts;

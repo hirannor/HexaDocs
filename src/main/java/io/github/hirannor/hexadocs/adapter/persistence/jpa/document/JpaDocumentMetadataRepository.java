@@ -1,4 +1,4 @@
-package io.github.hirannor.hexadocs.adapter.persistence.jpa;
+package io.github.hirannor.hexadocs.adapter.persistence.jpa.document;
 
 import io.github.hirannor.hexadocs.domain.document.Document;
 import io.github.hirannor.hexadocs.domain.document.DocumentId;

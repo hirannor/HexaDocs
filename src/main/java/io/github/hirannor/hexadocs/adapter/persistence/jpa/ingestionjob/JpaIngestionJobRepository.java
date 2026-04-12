@@ -1,4 +1,4 @@
-package io.github.hirannor.hexadocs.adapter.persistence.jpa;
+package io.github.hirannor.hexadocs.adapter.persistence.jpa.ingestionjob;
 
 import io.github.hirannor.hexadocs.domain.document.DocumentId;
 import io.github.hirannor.hexadocs.domain.ingestionjob.IngestionJob;
