@@ -44,7 +44,7 @@ adapter:
   persistence: spring-data-jpa
   ai: spring-ai
   file: local-file-system-storage
-  chunking: simple-text
+  chunking: npl
   extraction: pdf-text
 
 storage:

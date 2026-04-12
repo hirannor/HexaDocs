@@ -1,4 +1,4 @@
-package io.github.hirannor.hexadocs.adapter.chunking.simple;
+package io.github.hirannor.hexadocs.adapter.chunking.npl;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.ComponentScan;
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan
 @ConditionalOnProperty(
         value = "adapter.chunking",
-        havingValue = "simple-text"
+        havingValue = "npl"
 )
-public class SimpleTextChunkerConfiguration {
+public class NplTextChunkerConfiguration {
 }

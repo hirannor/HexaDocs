@@ -22,6 +22,7 @@
         <spring-ai.version>1.0.0-M6</spring-ai.version>
         <liquibase.version>4.33.0</liquibase.version>
         <pdfbox.version>3.0.7</pdfbox.version>
+        <icu4j.version>75.1</icu4j.version>
     </properties>
 
     <dependencyManagement>
@@ -81,6 +82,12 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j</artifactId>
+            <version>${icu4j.version}</version>
         </dependency>
 
         <dependency>
