@@ -1,4 +1,4 @@
-package io.github.hirannor.hexadocs.adapter.web.websocket;
+package io.github.hirannor.hexadocs.adapter.web.websocket.chat;
 
 import io.github.hirannor.hexadocs.application.chat.usecase.Answer;
 import io.github.hirannor.hexadocs.application.chat.usecase.AskQuestion;

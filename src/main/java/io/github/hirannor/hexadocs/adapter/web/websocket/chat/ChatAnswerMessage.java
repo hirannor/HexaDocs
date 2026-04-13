@@ -1,4 +1,4 @@
-package io.github.hirannor.hexadocs.adapter.web.websocket;
+package io.github.hirannor.hexadocs.adapter.web.websocket.chat;
 
 public class ChatAnswerMessage {
     private String answer;

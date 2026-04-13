@@ -1,4 +1,4 @@
-package io.github.hirannor.hexadocs.adapter.web.websocket;
+package io.github.hirannor.hexadocs.adapter.web.websocket.chat;
 
 public class ChatQuestionMessage {
     private String knowledgeBaseId;

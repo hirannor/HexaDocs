@@ -1,4 +1,4 @@
-package io.github.hirannor.hexadocs.adapter.web.gui;
+package io.github.hirannor.hexadocs.adapter.web.gui.chat;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

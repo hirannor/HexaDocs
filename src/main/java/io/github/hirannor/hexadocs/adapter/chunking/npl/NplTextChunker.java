@@ -13,7 +13,7 @@ import java.util.Locale;
 @Component
 class NplTextChunker implements TextChunker {
 
-    private static final int MAX_CHUNK_SIZE = 1200;
+    private static final int MAX_CHUNK_SIZE = 300;
     private static final int OVERLAP_SENTENCES = 2;
 
     @Override
@@ -25,32 +25,29 @@ class NplTextChunker implements TextChunker {
         final List<String> sentences = extractSentences(text);
         final List<Chunk> result = new ArrayList<>();
 
-        final List<String> window = new ArrayList<>();
+        int start = 0;
         int order = 0;
 
-        for (int i = 0; i < sentences.size(); i++) {
-            window.add(sentences.get(i));
+        while (start < sentences.size()) {
 
-            if (estimateSize(window) > MAX_CHUNK_SIZE) {
-                window.removeLast();
+            int size = 0;
+            int end = start;
 
-                result.add(buildChunk(window, documentId, order++));
+            while (end < sentences.size()) {
+                int sentenceSize = estimateTokens(sentences.get(end));
 
-                final List<String> overlap = new ArrayList<>();
-
-                for (int j = Math.max(0, i - OVERLAP_SENTENCES); j < i; j++) {
-                    overlap.add(sentences.get(j));
+                if (size + sentenceSize > MAX_CHUNK_SIZE && end > start) {
+                    break;
                 }
 
-                overlap.add(sentences.get(i));
-
-                window.clear();
-                window.addAll(overlap);
+                size += sentenceSize;
+                end++;
             }
-        }
 
-        if (!window.isEmpty()) {
-            result.add(buildChunk(window, documentId, order));
+            final List<String> chunkSentences = sentences.subList(start, end);
+            result.add(buildChunk(chunkSentences, documentId, order++));
+
+            start = Math.max(start + 1, end - OVERLAP_SENTENCES);
         }
 
         return result;
@@ -66,7 +63,7 @@ class NplTextChunker implements TextChunker {
     }
 
     private List<String> extractSentences(final String text) {
-        final BreakIterator iterator = BreakIterator.getSentenceInstance(Locale.ENGLISH);
+        final BreakIterator iterator = BreakIterator.getSentenceInstance(Locale.getDefault());
         iterator.setText(text);
 
         final List<String> sentences = new ArrayList<>();
@@ -85,11 +82,7 @@ class NplTextChunker implements TextChunker {
         return sentences;
     }
 
-    private int estimateSize(final List<String> sentences) {
-        int size = 0;
-        for (String s : sentences) {
-            size += s.length();
-        }
-        return size;
+    private int estimateTokens(final String text) {
+        return Math.max(1, text.length() / 4);
     }
 }

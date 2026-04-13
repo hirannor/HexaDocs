@@ -95,7 +95,7 @@ class ChatService implements QuestionAsking {
     private String buildContext(final List<VectorSearchResult> results) {
         final StringBuilder sb = new StringBuilder();
 
-        for (VectorSearchResult r : results) {
+        for (final VectorSearchResult r : results) {
             if (sb.length() > MAX_CONTEXT_CHARS) {
                 break;
             }
