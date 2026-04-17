@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan
 @ConditionalOnProperty(
         value = "adapter.extraction",
-        havingValue = "pdf-text"
+        havingValue = "simple-pdf-text-extractor"
 )
-public class PdfTextExtractionConfiguration {
+public class SimplePdfTextExtractionConfiguration {
 }

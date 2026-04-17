@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-class PdfTextExtractor implements TextExtractor {
+class SimplePdfTextExtractor implements TextExtractor {
 
     @Override
     public String extract(final byte[] file) {

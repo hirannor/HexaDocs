@@ -18,7 +18,10 @@ HexaDocs is a backend system that allows users to:
 The system is designed around **clean architecture principles**, strong domain modeling, and asynchronous event-driven
 workflows.
 
+![APP_1](images/app.png)
+
 ---
+
 
 ## 🧠 Core Idea
 
@@ -113,9 +116,10 @@ multipart/form-data
 
 | Field | Type | Required | Description |
 |------|------|----------|-------------|
-| file | binary (PDF) | Yes | The document file to upload |
-| name | string       | Yes | The document name | 
-| knowledgeBaseId | string (UUID) | Yes | ID of the target knowledge base |
+| file | binary (PDF) | Yes      | The document file to upload |
+| name | string       | Yes      | The document name | 
+| knowledgeBaseId | string (UUID) | Yes      | ID of the target knowledge base |
+ | language  | string | Yes      | Language of the document | 
 
 ---
 
@@ -144,3 +148,11 @@ Start all services:
 
 ```bash
 docker-compose up -d
+```
+
+# ⚙️ Typical Workflow via UI
+1. Open http://localhost:8080
+2. Create a Knowledge Base
+3. Upload a PDF document
+4. Wait for ingestion pipeline to process the document
+5. Start chatting with your documents instantly

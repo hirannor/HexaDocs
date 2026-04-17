@@ -49,7 +49,7 @@ adapter:
   ai: spring-ai
   file: local-file-system-storage
   chunking: npl
-  extraction: pdf-text
+  extraction: simple-pdf-text-extractor
 
 storage:
   local-file-system-path: /storage/documents
