@@ -4,7 +4,7 @@ logging:
     io:
       github:
         hirannor:
-          hexadocs: INFO
+          hexadocs: DEBUG
   file:
     path: logs
 

@@ -4,6 +4,8 @@ import io.github.hirannor.hexadocs.application.document.port.KnowledgeStore;
 import io.github.hirannor.hexadocs.application.document.port.VectorDocument;
 import io.github.hirannor.hexadocs.application.document.port.VectorQuery;
 import io.github.hirannor.hexadocs.application.document.port.VectorSearchResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
@@ -15,6 +17,8 @@ import java.util.Map;
 
 @Component
 class SpringAiKnowledgeStore implements KnowledgeStore {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpringAiKnowledgeStore.class);
 
     private final VectorStore store;
 
@@ -35,21 +39,31 @@ class SpringAiKnowledgeStore implements KnowledgeStore {
     public List<VectorSearchResult> search(final VectorQuery query) {
         final String filter = buildFilter(query);
 
-        final List<Document> results = store.similaritySearch(
+        final List<Document> documents = store.similaritySearch(
                 SearchRequest.builder()
                         .query(query.text())
                         .topK(query.topK())
+                        .similarityThreshold(0.5)
                         .filterExpression(filter)
                         .build()
         );
 
-        if (results == null) {
+        if (documents == null) {
             return List.of();
         }
 
-        return results.stream()
+        final List<VectorSearchResult> results = documents.stream()
                 .map(this::toSearchResult)
                 .toList();
+
+        results.forEach(r ->
+                LOGGER.debug("Chunk | id={} | score={}",
+                        r.id(),
+                        r.score()
+                )
+        );
+
+        return results;
     }
 
     private Document toSpringDocument(final VectorDocument doc) {
@@ -75,10 +89,6 @@ class SpringAiKnowledgeStore implements KnowledgeStore {
     }
 
     private double extractScore(final Document doc) {
-        final Object score = doc.getMetadata().get("score");
-        if (score instanceof Number n) {
-            return n.doubleValue();
-        }
-        return 0.0;
+        return doc.getScore() != null ? doc.getScore() : 0.0;
     }
 }
