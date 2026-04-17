@@ -27,6 +27,10 @@
                 <constraints nullable="false"/>
             </column>
 
+            <column name="LANGUAGE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
             <column name="CREATED_AT" type="TIMESTAMP"/>
 
         </createTable>

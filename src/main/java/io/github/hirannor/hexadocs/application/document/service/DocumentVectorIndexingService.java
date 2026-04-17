@@ -5,7 +5,9 @@ import io.github.hirannor.hexadocs.application.document.port.*;
 import io.github.hirannor.hexadocs.application.document.usecase.DocumentVectorIndexed;
 import io.github.hirannor.hexadocs.application.document.usecase.DocumentVectorIndexing;
 import io.github.hirannor.hexadocs.application.document.usecase.IndexDocument;
+import io.github.hirannor.hexadocs.domain.document.Document;
 import io.github.hirannor.hexadocs.domain.document.DocumentId;
+import io.github.hirannor.hexadocs.domain.document.DocumentMetadataRepository;
 import io.github.hirannor.hexadocs.domain.knowledgebase.KnowledgeBaseId;
 import io.github.hirannor.hexadocs.infrastructure.messaging.MessagePublisher;
 import org.slf4j.Logger;
@@ -26,17 +28,20 @@ class DocumentVectorIndexingService implements DocumentVectorIndexing {
     private final VectorDocumentFactory vectors;
     private final TextChunker textChunker;
     private final DocumentTextStorage documentTextStorage;
+    private final DocumentMetadataRepository documents;
     private final KnowledgeStore knowledgeStore;
     private final MessagePublisher messages;
 
     DocumentVectorIndexingService(final VectorDocumentFactory vectors,
                                   final TextChunker textChunker,
                                   final DocumentTextStorage documentTextStorage,
+                                  final DocumentMetadataRepository documents,
                                   final KnowledgeStore knowledgeStore,
                                   final MessagePublisher messages) {
         this.vectors = vectors;
         this.textChunker = textChunker;
         this.documentTextStorage = documentTextStorage;
+        this.documents = documents;
         this.knowledgeStore = knowledgeStore;
         this.messages = messages;
     }
@@ -49,12 +54,17 @@ class DocumentVectorIndexingService implements DocumentVectorIndexing {
         try {
             log.info("Starting vector indexing | documentId={}", documentId.asText());
 
+            final Document doc = documents.findById(documentId)
+                    .orElseThrow(() -> new IllegalStateException(
+                            "Document not found for documentId: " + documentId
+                    ));
+
             final String extractedText = documentTextStorage.load(documentId)
                     .orElseThrow(() -> new IllegalStateException(
                             "Extracted text not found for documentId: " + documentId
                     ));
 
-            final List<Chunk> chunks = textChunker.chunk(extractedText, documentId);
+            final List<Chunk> chunks = textChunker.chunk(ChunkText.issue(extractedText, documentId, doc.language()));
 
             if (chunks.isEmpty()) {
                 throw new IllegalStateException("No chunks generated");

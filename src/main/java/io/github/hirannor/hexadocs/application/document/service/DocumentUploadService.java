@@ -51,7 +51,8 @@ class DocumentUploadService implements DocumentUploading {
                 id,
                 command.knowledgeBaseId(),
                 command.name(),
-                FileReference.of(id.asText())
+                FileReference.of(id.asText()),
+                command.language()
         );
 
         documentMetadata.save(document);

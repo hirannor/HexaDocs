@@ -33,13 +33,17 @@ public class DocumentEntity {
     @Column(name = "FILE_REFERENCE")
     private String fileReference;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "LANGUAGE", nullable = false)
+    private DocumentLanguageEntity language;
+
     @Column(name = "CREATED_AT", nullable = false)
     private Instant createdAt;
 
     public DocumentEntity() {
     }
 
-    public Long id() {
+    public Long getId() {
         return id;
     }
 
@@ -79,11 +83,21 @@ public class DocumentEntity {
         this.fileReference = fileReference;
     }
 
-    public Instant createdAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
+    public void setCreatedAt(final Instant createdAt) {
         this.createdAt = createdAt;
     }
+
+
+    public DocumentLanguageEntity getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(final DocumentLanguageEntity language) {
+        this.language = language;
+    }
+
 }

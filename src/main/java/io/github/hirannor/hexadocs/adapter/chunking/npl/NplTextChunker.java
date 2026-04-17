@@ -2,13 +2,17 @@ package io.github.hirannor.hexadocs.adapter.chunking.npl;
 
 import com.ibm.icu.text.BreakIterator;
 import io.github.hirannor.hexadocs.application.document.port.Chunk;
+import io.github.hirannor.hexadocs.application.document.port.ChunkText;
 import io.github.hirannor.hexadocs.application.document.port.TextChunker;
 import io.github.hirannor.hexadocs.domain.document.DocumentId;
+import io.github.hirannor.hexadocs.domain.document.DocumentLanguage;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
+import java.util.function.Function;
 
 @Component
 class NplTextChunker implements TextChunker {
@@ -16,13 +20,15 @@ class NplTextChunker implements TextChunker {
     private static final int MAX_CHUNK_SIZE = 300;
     private static final int OVERLAP_SENTENCES = 2;
 
-    @Override
-    public List<Chunk> chunk(final String text, final DocumentId documentId) {
-        if (text == null || text.isBlank()) {
-            return List.of();
-        }
+    private final Function<DocumentLanguage, Locale> mapLocale;
 
-        final List<String> sentences = extractSentences(text);
+    NplTextChunker() {
+        this.mapLocale = new DocumentLanguageToLocaleMapper();
+    }
+
+    @Override
+    public List<Chunk> chunk(final ChunkText command) {
+        final List<String> sentences = extractSentences(command.text(), command.language());
         final List<Chunk> result = new ArrayList<>();
 
         int start = 0;
@@ -45,7 +51,7 @@ class NplTextChunker implements TextChunker {
             }
 
             final List<String> chunkSentences = sentences.subList(start, end);
-            result.add(buildChunk(chunkSentences, documentId, order++));
+            result.add(buildChunk(chunkSentences, command.document(), order++));
 
             start = Math.max(start + 1, end - OVERLAP_SENTENCES);
         }
@@ -62,8 +68,12 @@ class NplTextChunker implements TextChunker {
         return Chunk.of(documentId, content, order);
     }
 
-    private List<String> extractSentences(final String text) {
-        final BreakIterator iterator = BreakIterator.getSentenceInstance(Locale.getDefault());
+    private List<String> extractSentences(final String text, final DocumentLanguage language) {
+        final Locale locale = Optional.ofNullable(language)
+                .map(mapLocale)
+                .orElse(Locale.getDefault());
+
+        final BreakIterator iterator = BreakIterator.getSentenceInstance(locale);
         iterator.setText(text);
 
         final List<String> sentences = new ArrayList<>();

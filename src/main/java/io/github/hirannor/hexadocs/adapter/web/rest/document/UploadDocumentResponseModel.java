@@ -1,12 +1,12 @@
 package io.github.hirannor.hexadocs.adapter.web.rest.document;
 
-public class UploadDocumentResponse {
+public class UploadDocumentResponseModel {
     private String documentId;
 
-    public UploadDocumentResponse() {
+    public UploadDocumentResponseModel() {
     }
 
-    public UploadDocumentResponse(final String documentId) {
+    public UploadDocumentResponseModel(final String documentId) {
         this.documentId = documentId;
     }
 
