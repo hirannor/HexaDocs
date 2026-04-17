@@ -8,6 +8,7 @@ import io.github.hirannor.hexadocs.application.chat.usecase.QuestionAsking;
 import io.github.hirannor.hexadocs.application.document.port.KnowledgeStore;
 import io.github.hirannor.hexadocs.application.document.port.VectorQuery;
 import io.github.hirannor.hexadocs.application.document.port.VectorSearchResult;
+import io.github.hirannor.hexadocs.infrastructure.messaging.MessagePublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -37,14 +38,14 @@ class ChatService implements QuestionAsking {
 
     private final KnowledgeStore knowledgeStore;
     private final LlmClient llm;
-    private final AnswerPublisher answerPublisher;
+    private final MessagePublisher messages;
 
     ChatService(final KnowledgeStore knowledgeStore,
                 final LlmClient llm,
-                final AnswerPublisher answerPublisher) {
+                final MessagePublisher messages) {
         this.knowledgeStore = knowledgeStore;
         this.llm = llm;
-        this.answerPublisher = answerPublisher;
+        this.messages = messages;
     }
 
     @Override
@@ -94,9 +95,9 @@ class ChatService implements QuestionAsking {
         log.info("LLM response received | responseLength={}", response.length());
 
         final Answer answer = Answer.of(response);
-        answerPublisher.publish(answer);
+        messages.publish(AnswerGenerated.record(answer));
 
-        return answer;
+        return Answer.of(response);
     }
 
     private String buildContext(final List<VectorSearchResult> results) {
