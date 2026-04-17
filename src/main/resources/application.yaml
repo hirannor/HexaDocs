@@ -49,7 +49,15 @@ adapter:
   ai: spring-ai
   file: local-file-system-storage
   chunking: npl
-  extraction: simple-pdf-text-extractor
+  extraction: hybrid-pdf-text-extractor
 
 storage:
   local-file-system-path: /storage/documents
+
+tesseract:
+  datapath: ${TESSDATA_PREFIX:}
+  language: eng+hun
+  ocr:
+    dpi: 300
+    page-seg-mode: 1
+    engine-mode: 1

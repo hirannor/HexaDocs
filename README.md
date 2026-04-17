@@ -148,6 +148,38 @@ POST /api/chat
 }
 ```
 
+---
+
+## 🧪 OCR (Tesseract) Setup
+
+HexaDocs uses **Tesseract OCR** as a fallback mechanism for PDF text extraction when embedded text layers are missing or
+corrupted.
+
+### 📦 Required Installation
+
+Tesseract must be installed on the host machine:
+
+- Windows installer: https://github.com/UB-Mannheim/tesseract/wiki
+- Linux: `sudo apt install tesseract-ocr`
+- macOS: `brew install tesseract`
+
+---
+
+### 🌍 Language Support
+
+By default, only English is installed.  
+If you process non-English documents (e.g. Hungarian), you must install additional language packs.
+
+Example for Hungarian:
+
+- Download: https://github.com/tesseract-ocr/tessdata_best/blob/main/hun.traineddata
+
+#### ⚙️ Environment Variable Configuration
+
+Tesseract requires the `TESSDATA_PREFIX` environment variable to be set correctly.
+
+#### Windows example:
+
 ## 🚀 Running the system
 
 Start all services:

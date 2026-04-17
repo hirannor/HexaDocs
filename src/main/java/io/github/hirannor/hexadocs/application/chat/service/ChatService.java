@@ -1,6 +1,5 @@
 package io.github.hirannor.hexadocs.application.chat.service;
 
-import io.github.hirannor.hexadocs.application.chat.port.AnswerPublisher;
 import io.github.hirannor.hexadocs.application.chat.port.LlmClient;
 import io.github.hirannor.hexadocs.application.chat.usecase.Answer;
 import io.github.hirannor.hexadocs.application.chat.usecase.AskQuestion;
@@ -70,7 +69,10 @@ class ChatService implements QuestionAsking {
 
         if (results.isEmpty()) {
             log.info("No context found for question, returning fallback answer");
-            return Answer.of("I don't know based on the provided documents.");
+
+            final Answer fallbackAnswer = Answer.of("I don't know based on the provided documents.");
+            messages.publish(AnswerGenerated.record(fallbackAnswer));
+            return fallbackAnswer;
         }
 
         final String context = buildContext(results);

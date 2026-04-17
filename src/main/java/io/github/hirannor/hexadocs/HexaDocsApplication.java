@@ -2,7 +2,7 @@ package io.github.hirannor.hexadocs;
 
 import io.github.hirannor.hexadocs.adapter.ai.SpringAiConfiguration;
 import io.github.hirannor.hexadocs.adapter.chunking.npl.NplTextChunkerConfiguration;
-import io.github.hirannor.hexadocs.adapter.extraction.pdf.SimplePdfTextExtractionConfiguration;
+import io.github.hirannor.hexadocs.adapter.extraction.pdf.HybridPdfTextExtractionConfiguration;
 import io.github.hirannor.hexadocs.adapter.file.localfilesystem.LocalFileSystemDocumentStorageConfiguration;
 import io.github.hirannor.hexadocs.adapter.messaging.eventbus.rabbit.RabbitMqMessagingConfiguration;
 import io.github.hirannor.hexadocs.adapter.persistence.jpa.JpaPersistenceConfiguration;
@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Import;
         JpaPersistenceConfiguration.class,
         SpringAiConfiguration.class,
         RabbitMqMessagingConfiguration.class,
-        SimplePdfTextExtractionConfiguration.class,
+        HybridPdfTextExtractionConfiguration.class,
         NplTextChunkerConfiguration.class,
         LocalFileSystemDocumentStorageConfiguration.class,
         WebSocketConfiguration.class,

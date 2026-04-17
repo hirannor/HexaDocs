@@ -1,6 +1,7 @@
 package io.github.hirannor.hexadocs.adapter.extraction.pdf;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -8,7 +9,8 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan
 @ConditionalOnProperty(
         value = "adapter.extraction",
-        havingValue = "simple-pdf-text-extractor"
+        havingValue = "hybrid-pdf-text-extractor"
 )
-public class SimplePdfTextExtractionConfiguration {
+@EnableConfigurationProperties({TesseractProperties.class})
+public class HybridPdfTextExtractionConfiguration {
 }
