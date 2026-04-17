@@ -1,5 +1,6 @@
 package io.github.hirannor.hexadocs.application.chat.service;
 
+import io.github.hirannor.hexadocs.application.chat.port.AnswerPublisher;
 import io.github.hirannor.hexadocs.application.chat.port.LlmClient;
 import io.github.hirannor.hexadocs.application.chat.usecase.Answer;
 import io.github.hirannor.hexadocs.application.chat.usecase.AskQuestion;
@@ -36,11 +37,14 @@ class ChatService implements QuestionAsking {
 
     private final KnowledgeStore knowledgeStore;
     private final LlmClient llm;
+    private final AnswerPublisher answerPublisher;
 
     ChatService(final KnowledgeStore knowledgeStore,
-                final LlmClient llm) {
+                final LlmClient llm,
+                final AnswerPublisher answerPublisher) {
         this.knowledgeStore = knowledgeStore;
         this.llm = llm;
+        this.answerPublisher = answerPublisher;
     }
 
     @Override
@@ -89,7 +93,10 @@ class ChatService implements QuestionAsking {
 
         log.info("LLM response received | responseLength={}", response.length());
 
-        return Answer.of(response);
+        final Answer answer = Answer.of(response);
+        answerPublisher.publish(answer);
+
+        return answer;
     }
 
     private String buildContext(final List<VectorSearchResult> results) {
