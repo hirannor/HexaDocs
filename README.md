@@ -1,5 +1,11 @@
 # 📚 HexaDocs
 
+| CI Status                                                                                                                                                     | License                                                                                                                                                                                                          |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [![CI](https://github.com/hirannor/HexaDocs/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/hirannor/HexaDocs/actions/workflows/ci.yaml) | [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Commons Clause](https://img.shields.io/badge/Commons-Clause-red.svg)](https://commonsclause.com/) |
+
+---
+
 A **domain-driven, event-driven document intelligence system** built with **Hexagonal Architecture**, designed to
 support semantic document ingestion, chunking, embedding, and AI-powered retrieval (RAG).
 
