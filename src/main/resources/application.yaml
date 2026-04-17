@@ -55,7 +55,7 @@ storage:
   local-file-system-path: /storage/documents
 
 tesseract:
-  datapath: ${TESSDATA_PREFIX:}
+  datapath: ${TESSDATA_PREFIX:${user.home}/tessdata}
   language: eng+hun
   ocr:
     dpi: 300

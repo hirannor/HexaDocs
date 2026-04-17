@@ -23,6 +23,7 @@
         <liquibase.version>4.33.0</liquibase.version>
         <pdfbox.version>3.0.7</pdfbox.version>
         <icu4j.version>75.1</icu4j.version>
+        <tess4j.version>5.13.0</tess4j.version>
     </properties>
 
     <dependencyManagement>
@@ -103,7 +104,7 @@
         <dependency>
             <groupId>net.sourceforge.tess4j</groupId>
             <artifactId>tess4j</artifactId>
-            <version>5.18.0</version>
+            <version>${tess4j.version}</version>
             <scope>compile</scope>
         </dependency>
 

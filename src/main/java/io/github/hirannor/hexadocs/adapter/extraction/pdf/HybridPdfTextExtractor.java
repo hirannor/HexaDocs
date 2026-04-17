@@ -15,12 +15,13 @@ public class HybridPdfTextExtractor implements TextExtractor {
 
     private final ITesseract tesseract;
 
-    public HybridPdfTextExtractor(final TesseractFactory factory) {
-        this.tesseract = factory.get();
+    public HybridPdfTextExtractor(final ITesseract tesseract) {
+        this.tesseract = tesseract;
     }
 
     @Override
-    public String extract(byte[] file) {
+    public String extract(final byte[] file) {
+
         if (file == null || file.length == 0) {
             throw new IllegalArgumentException("PDF is empty");
         }
@@ -31,7 +32,7 @@ public class HybridPdfTextExtractor implements TextExtractor {
                 throw new IllegalStateException("Encrypted PDFs not supported");
             }
 
-            final String text = extractTextLayer(document);
+            String text = extractTextLayer(document);
 
             if (isBadText(text)) {
                 return ocr(document);
@@ -57,17 +58,19 @@ public class HybridPdfTextExtractor implements TextExtractor {
                 .filter(c -> c == '\uFFFD')
                 .count();
 
-        return (double) bad / text.length() > 0.02;
+        return ((double) bad / text.length()) > 0.02;
     }
 
     private String ocr(final PDDocument document) throws Exception {
         final PDFRenderer renderer = new PDFRenderer(document);
-
-        final StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < document.getNumberOfPages(); i++) {
             final BufferedImage image = renderer.renderImageWithDPI(i, 300);
-            sb.append(tesseract.doOCR(image)).append("\n");
+
+            final String pageText = tesseract.doOCR(image);
+
+            sb.append(pageText).append("\n");
         }
 
         return clean(sb.toString());

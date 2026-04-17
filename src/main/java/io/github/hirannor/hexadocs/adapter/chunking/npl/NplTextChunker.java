@@ -4,7 +4,6 @@ import com.ibm.icu.text.BreakIterator;
 import io.github.hirannor.hexadocs.application.document.port.Chunk;
 import io.github.hirannor.hexadocs.application.document.port.ChunkText;
 import io.github.hirannor.hexadocs.application.document.port.TextChunker;
-import io.github.hirannor.hexadocs.domain.document.DocumentId;
 import io.github.hirannor.hexadocs.domain.document.DocumentLanguage;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +16,8 @@ import java.util.function.Function;
 @Component
 class NplTextChunker implements TextChunker {
 
-    private static final int MAX_CHUNK_SIZE = 300;
-    private static final int OVERLAP_SENTENCES = 2;
+    private static final int MAX_TOKENS = 180;
+    private static final int OVERLAP_SENTENCES = 1;
 
     private final Function<DocumentLanguage, Locale> mapLocale;
 
@@ -28,6 +27,7 @@ class NplTextChunker implements TextChunker {
 
     @Override
     public List<Chunk> chunk(final ChunkText command) {
+
         final List<String> sentences = extractSentences(command.text(), command.language());
         final List<Chunk> result = new ArrayList<>();
 
@@ -36,22 +36,30 @@ class NplTextChunker implements TextChunker {
 
         while (start < sentences.size()) {
 
-            int size = 0;
+            int tokens = 0;
             int end = start;
 
-            while (end < sentences.size()) {
-                int sentenceSize = estimateTokens(sentences.get(end));
+            final List<String> buffer = new ArrayList<>();
 
-                if (size + sentenceSize > MAX_CHUNK_SIZE && end > start) {
+            while (end < sentences.size()) {
+
+                final String sentence = sentences.get(end);
+                final int sentenceTokens = estimateTokens(sentence);
+
+                if (tokens + sentenceTokens > MAX_TOKENS && !buffer.isEmpty()) {
                     break;
                 }
 
-                size += sentenceSize;
+                buffer.add(sentence);
+                tokens += sentenceTokens;
                 end++;
             }
 
-            final List<String> chunkSentences = sentences.subList(start, end);
-            result.add(buildChunk(chunkSentences, command.document(), order++));
+            final String content = String.join(" ", buffer).trim();
+
+            result.add(
+                    Chunk.of(command.document(), content, order++)
+            );
 
             start = Math.max(start + 1, end - OVERLAP_SENTENCES);
         }
@@ -59,19 +67,13 @@ class NplTextChunker implements TextChunker {
         return result;
     }
 
-    private Chunk buildChunk(
-            final List<String> sentences,
-            final DocumentId documentId,
-            final int order
+    private List<String> extractSentences(
+            final String text,
+            final DocumentLanguage language
     ) {
-        final String content = String.join(" ", sentences).trim();
-        return Chunk.of(documentId, content, order);
-    }
-
-    private List<String> extractSentences(final String text, final DocumentLanguage language) {
         final Locale locale = Optional.ofNullable(language)
                 .map(mapLocale)
-                .orElse(Locale.getDefault());
+                .orElse(Locale.ROOT);
 
         final BreakIterator iterator = BreakIterator.getSentenceInstance(locale);
         iterator.setText(text);
@@ -79,11 +81,13 @@ class NplTextChunker implements TextChunker {
         final List<String> sentences = new ArrayList<>();
 
         int start = iterator.first();
+
         for (int end = iterator.next();
              end != BreakIterator.DONE;
              start = end, end = iterator.next()) {
 
-            String sentence = text.substring(start, end).trim();
+            final String sentence = text.substring(start, end).trim();
+
             if (!sentence.isBlank()) {
                 sentences.add(sentence);
             }
