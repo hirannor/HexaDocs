@@ -47,7 +47,8 @@ public class IngestionPipelineEventHandler {
 
     @EventListener
     void handle(final DocumentTextExtracted event) {
-        documentVectorIndexing.index(IndexDocument.issue(event.ingestionJobId(), event.knowledgeBaseId(), event.document()));
+        documentVectorIndexing.index(
+                IndexDocument.issue(event.ingestionJobId(), event.knowledgeBaseId(), event.document()));
     }
 
     @EventListener
@@ -57,16 +58,11 @@ public class IngestionPipelineEventHandler {
 
     @EventListener
     void handle(final DocumentVectorIndexingFailed event) {
-        ingestionJobFailing.fail(
-                FailIngestionJob.issue(event.ingestionJobId(), event.error())
-        );
+        ingestionJobFailing.fail(FailIngestionJob.issue(event.ingestionJobId(), event.error()));
     }
 
     @EventListener
     void handle(final DocumentTextExtractionFailed event) {
-        ingestionJobFailing.fail(
-                FailIngestionJob.issue(event.ingestionJobId(), event.error())
-        );
+        ingestionJobFailing.fail(FailIngestionJob.issue(event.ingestionJobId(), event.error()));
     }
-
 }

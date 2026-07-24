@@ -1,4 +1,4 @@
-package io.github.hirannor.hexadocs.application.document.port;
+package io.github.hirannor.hexadocs.application.document.port.storage.document;
 
 import io.github.hirannor.hexadocs.domain.document.DocumentId;
 

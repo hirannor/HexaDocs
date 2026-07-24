@@ -51,11 +51,9 @@ public class RabbitMqMessagingConfiguration {
         return new TopicExchange(properties.getExchange());
     }
 
-
     @Bean
     Queue messageQueue() {
-        return QueueBuilder.durable(properties.getQueueName())
-                .build();
+        return QueueBuilder.durable(properties.getQueueName()).build();
     }
 
     @Bean
@@ -83,17 +81,11 @@ public class RabbitMqMessagingConfiguration {
 
         factory.setMessageConverter(createJacksonMessageConverter());
 
-        factory.setAdviceChain(
-                RetryInterceptorBuilder.stateless()
-                        .maxAttempts(properties.getRetry().getMaxAttempts())
-                        .backOffOptions(2000, 2.0, 10000)
-                        .recoverer(new RejectAndDontRequeueRecoverer())
-                        .build()
-        );
+        factory.setAdviceChain(RetryInterceptorBuilder.stateless().maxAttempts(properties.getRetry().getMaxAttempts())
+                .backOffOptions(2000, 2.0, 10000).recoverer(new RejectAndDontRequeueRecoverer()).build());
 
         return factory;
     }
-
 
     @Bean
     RabbitTemplate rabbitTemplate() {

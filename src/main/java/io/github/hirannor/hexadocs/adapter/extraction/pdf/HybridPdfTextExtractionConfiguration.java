@@ -10,13 +10,10 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan
-@ConditionalOnProperty(
-        value = "adapter.extraction",
-        havingValue = "hybrid-pdf-text-extractor"
-)
+@ConditionalOnProperty(value = "adapter.extraction",
+        havingValue = "hybrid-pdf-text-extractor")
 @EnableConfigurationProperties({TesseractProperties.class})
 public class HybridPdfTextExtractionConfiguration {
-
     private final TesseractProperties config;
 
     public HybridPdfTextExtractionConfiguration(final TesseractProperties config) {
@@ -25,7 +22,6 @@ public class HybridPdfTextExtractionConfiguration {
 
     @Bean
     public ITesseract createTesseract() {
-
         final String dataPath = resolveDataPath();
 
         final Tesseract tesseract = new Tesseract();
@@ -53,8 +49,6 @@ public class HybridPdfTextExtractionConfiguration {
     }
 
     private String normalize(final String path) {
-        return path.endsWith("/") || path.endsWith("\\")
-                ? path
-                : path + "/";
+        return path.endsWith("/") || path.endsWith("\\") ? path : path + "/";
     }
 }

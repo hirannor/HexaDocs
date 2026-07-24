@@ -28,25 +28,20 @@ class DocumentUploadController {
         this.mapLanguageModelToDomain = new DocumentLanguageModelToDomainMapper();
     }
 
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<UploadDocumentResponseModel> upload(
-            @RequestParam("file") final MultipartFile file,
-            @RequestParam("name") final String name,
-            @RequestParam("knowledgeBaseId") final String knowledgeBaseId,
-            @RequestParam("language") final String language
-    ) throws IOException {
+    @PostMapping(value = "/upload",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<UploadDocumentResponseModel> upload(@RequestParam("file") final MultipartFile file,
+                                                              @RequestParam("name") final String name,
+                                                              @RequestParam("knowledgeBaseId")
+                                                              final String knowledgeBaseId, @RequestParam("language")
+                                                              final String language) throws IOException {
         final DocumentLanguageModel model = DocumentLanguageModel.from(language);
 
-        final UploadDocument command = UploadDocument.issue(
-                KnowledgeBaseId.from(knowledgeBaseId),
-                name,
-                file.getContentType(),
-                mapLanguageModelToDomain.apply(model)
-        );
+        final UploadDocument command = UploadDocument.issue(KnowledgeBaseId.from(knowledgeBaseId), name,
+                file.getContentType(), mapLanguageModelToDomain.apply(model));
 
         final DocumentId documentId = document.upload(command, file.getBytes());
 
-        return ResponseEntity.accepted()
-                .body(new UploadDocumentResponseModel(documentId.asText()));
+        return ResponseEntity.accepted().body(new UploadDocumentResponseModel(documentId.asText()));
     }
 }

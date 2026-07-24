@@ -24,26 +24,22 @@ class IngestionJobService implements IngestionJobStarting, IngestionJobCompletin
     private final IngestionJobRepository ingestionJobs;
     private final MessagePublisher messages;
 
-    IngestionJobService(final IngestionJobRepository ingestionJobs,
-                        final MessagePublisher messages) {
+    IngestionJobService(final IngestionJobRepository ingestionJobs, final MessagePublisher messages) {
         this.ingestionJobs = ingestionJobs;
         this.messages = messages;
     }
 
     @Override
     public IngestionJobId start(final StartIngestionJob command) {
-        log.info("Starting ingestion job | documentId={} | knowledgeBaseId={}",
-                command.documentId().asText(),
-                command.knowledgeBaseId().asText()
-        );
+        log.info("Starting ingestion job | documentId={} | knowledgeBaseId={}", command.documentId().asText(),
+                command.knowledgeBaseId().asText());
 
         final IngestionJob job = IngestionJob.create(command);
         job.start();
 
         ingestionJobs.save(job);
 
-        job.events()
-                .forEach(messages::publish);
+        job.events().forEach(messages::publish);
 
         log.info("Ingestion job started successfully | jobId={}", job.id().asText());
 

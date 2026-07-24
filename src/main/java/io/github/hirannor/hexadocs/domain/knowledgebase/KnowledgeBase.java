@@ -15,10 +15,7 @@ public class KnowledgeBase extends AggregateRoot {
     }
 
     public static KnowledgeBase create(final CreateKnowledgeBase command) {
-        final KnowledgeBase knowledgeBase = new KnowledgeBase(
-                KnowledgeBaseId.generate(),
-                command.name()
-        );
+        final KnowledgeBase knowledgeBase = new KnowledgeBase(KnowledgeBaseId.generate(), command.name());
 
         knowledgeBase.addEvent(KnowledgeBaseCreated.record(knowledgeBase.id, command.name()));
 
@@ -33,9 +30,7 @@ public class KnowledgeBase extends AggregateRoot {
         return name;
     }
 
-
     public void rename(final String newName) {
         this.name = Objects.requireNonNull(newName);
     }
-
 }

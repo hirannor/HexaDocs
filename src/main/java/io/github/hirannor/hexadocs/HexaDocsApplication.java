@@ -1,6 +1,7 @@
 package io.github.hirannor.hexadocs;
 
 import io.github.hirannor.hexadocs.adapter.ai.SpringAiConfiguration;
+import io.github.hirannor.hexadocs.adapter.chat.RuleBasedQueryClassifierConfiguration;
 import io.github.hirannor.hexadocs.adapter.chunking.npl.NplTextChunkerConfiguration;
 import io.github.hirannor.hexadocs.adapter.extraction.pdf.HybridPdfTextExtractionConfiguration;
 import io.github.hirannor.hexadocs.adapter.file.localfilesystem.LocalFileSystemDocumentStorageConfiguration;
@@ -16,32 +17,21 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 
 @Import({
-        RestConfiguration.class,
-        JpaPersistenceConfiguration.class,
-        SpringAiConfiguration.class,
-        RabbitMqMessagingConfiguration.class,
-        HybridPdfTextExtractionConfiguration.class,
-        NplTextChunkerConfiguration.class,
-        LocalFileSystemDocumentStorageConfiguration.class,
-        WebSocketConfiguration.class,
-        GuiConfiguration.class,
+        RestConfiguration.class, JpaPersistenceConfiguration.class, SpringAiConfiguration.class,
+        RabbitMqMessagingConfiguration.class, HybridPdfTextExtractionConfiguration.class,
+        NplTextChunkerConfiguration.class, LocalFileSystemDocumentStorageConfiguration.class,
+        WebSocketConfiguration.class, GuiConfiguration.class, RuleBasedQueryClassifierConfiguration.class
 })
-@SpringBootApplication(
-        exclude = {
-                org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration.class,
-                org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration.class,
-                org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration.class,
-                org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class
-        }
-)
-@ComponentScan(
-        excludeFilters = {
-                @ComponentScan.Filter(
-                        type = FilterType.REGEX,
-                        pattern = "io.github.hirannor.hexadocs.adapter.*"
-                ),
-        }
-)
+@SpringBootApplication(exclude = {
+        org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration.class,
+        org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration.class,
+        org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration.class,
+        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class
+})
+@ComponentScan(excludeFilters = {
+        @ComponentScan.Filter(type = FilterType.REGEX,
+                pattern = "io.github.hirannor.hexadocs.adapter.*"),
+})
 public class HexaDocsApplication {
 
     public static void main(String[] args) {

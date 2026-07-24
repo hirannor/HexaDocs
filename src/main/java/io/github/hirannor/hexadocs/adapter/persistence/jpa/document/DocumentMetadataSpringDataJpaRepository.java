@@ -10,11 +10,6 @@ public interface DocumentMetadataSpringDataJpaRepository extends Repository<Docu
 
     List<DocumentEntity> findByKnowledgeBaseId(String knowledgeBaseId);
 
-    Optional<DocumentEntity> findByDocumentIdAndKnowledgeBaseId(
-            String documentId,
-            String knowledgeBaseId
-    );
-
     boolean existsByDocumentId(String documentId);
 
     void deleteByDocumentId(String documentId);

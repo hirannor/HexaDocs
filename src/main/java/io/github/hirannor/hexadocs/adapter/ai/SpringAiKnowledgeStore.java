@@ -1,9 +1,10 @@
 package io.github.hirannor.hexadocs.adapter.ai;
 
-import io.github.hirannor.hexadocs.application.document.port.KnowledgeStore;
-import io.github.hirannor.hexadocs.application.document.port.VectorDocument;
-import io.github.hirannor.hexadocs.application.document.port.VectorQuery;
-import io.github.hirannor.hexadocs.application.document.port.VectorSearchResult;
+import io.github.hirannor.hexadocs.application.document.port.storage.knowledge.KnowledgeStore;
+import io.github.hirannor.hexadocs.application.document.port.storage.knowledge.VectorDocument;
+import io.github.hirannor.hexadocs.application.document.port.storage.knowledge.VectorQuery;
+import io.github.hirannor.hexadocs.application.document.port.storage.knowledge.VectorSearchResult;
+import io.github.hirannor.hexadocs.domain.knowledgebase.KnowledgeBaseId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
@@ -18,77 +19,89 @@ import java.util.Map;
 @Component
 class SpringAiKnowledgeStore implements KnowledgeStore {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpringAiKnowledgeStore.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(SpringAiKnowledgeStore.class);
 
-    private final VectorStore store;
+  private static final String KNOWLEDGE_BASE_ID_METADATA_KEY = "knowledgeBaseId";
 
-    public SpringAiKnowledgeStore(final VectorStore store) {
-        this.store = store;
+  private static final String DOCUMENT_PREFIX = "search_document: ";
+  private static final String QUERY_PREFIX = "search_query: ";
+
+  private final VectorStore store;
+
+  private final SpringAiConfigurationProperties.RetrievalProperties retrievalProperties;
+
+  SpringAiKnowledgeStore(final VectorStore store, final SpringAiConfigurationProperties properties) {
+    this.store = store;
+    this.retrievalProperties = properties.chat().retrieval();
+  }
+
+  @Override
+  public void store(final List<VectorDocument> documents) {
+    if (documents.isEmpty()) {
+      return;
     }
 
-    @Override
-    public void store(final List<VectorDocument> documents) {
-        final List<Document> aiDocuments = documents.stream()
-                .map(this::toSpringDocument)
-                .toList();
+    final List<Document> aiDocuments = documents.stream().map(this::toSpringDocument).toList();
 
-        store.add(aiDocuments);
+    LOGGER.debug("Storing vector documents | count={}", aiDocuments.size());
+
+    aiDocuments.forEach(document -> LOGGER.trace("Vector document | id={} | metadata={} | content={}", document.getId(),
+            document.getMetadata(), document.getText()));
+
+    store.add(aiDocuments);
+  }
+
+  @Override
+  public List<VectorSearchResult> search(final VectorQuery query) {
+    final String prefixedQueryText = QUERY_PREFIX + query.text();
+
+    final SearchRequest request = SearchRequest.builder().query(prefixedQueryText).topK(retrievalProperties.topK())
+            .similarityThreshold(retrievalProperties.similarityThreshold())
+            .filterExpression(buildKnowledgeBaseFilter(query)).build();
+
+    final List<Document> documents = store.similaritySearch(request);
+
+    if (documents == null || documents.isEmpty()) {
+      LOGGER.debug("No vector search results | knowledgeBaseId={} | query={}", query.knowledgeBaseId().asText(),
+              query.text());
+
+      return List.of();
     }
 
-    @Override
-    public List<VectorSearchResult> search(final VectorQuery query) {
-        final String filter = buildFilter(query);
+    final List<VectorSearchResult> results = documents.stream().map(this::toSearchResult).toList();
 
-        final List<Document> documents = store.similaritySearch(
-                SearchRequest.builder()
-                        .query(query.text())
-                        .topK(query.topK())
-                        .similarityThreshold(0.5)
-                        .filterExpression(filter)
-                        .build()
-        );
+    LOGGER.debug("Vector search completed | knowledgeBaseId={} | resultCount={}", query.knowledgeBaseId().asText(),
+            results.size());
 
-        if (documents == null) {
-            return List.of();
-        }
+    results.forEach(result -> LOGGER.debug("Chunk | id={} | score={} | content={}", result.id(), result.score(),
+            result.content()));
 
-        final List<VectorSearchResult> results = documents.stream()
-                .map(this::toSearchResult)
-                .toList();
+    return results;
+  }
 
-        results.forEach(r ->
-                LOGGER.debug("Chunk | id={} | score={}",
-                        r.id(),
-                        r.score()
-                )
-        );
+  private Document toSpringDocument(final VectorDocument vectorDocument) {
+    final Map<String, Object> metadata = new HashMap<>(vectorDocument.metadata());
 
-        return results;
-    }
+    metadata.put(KNOWLEDGE_BASE_ID_METADATA_KEY, vectorDocument.knowledgeBaseId().asText());
 
-    private Document toSpringDocument(final VectorDocument doc) {
-        final Map<String, Object> metadata = new HashMap<>(doc.metadata());
+    final String prefixedContent = DOCUMENT_PREFIX + vectorDocument.content();
 
-        return new Document(
-                doc.id(),
-                doc.content(),
-                metadata
-        );
-    }
-    private VectorSearchResult toSearchResult(final Document doc) {
-        return new VectorSearchResult(
-                doc.getId(),
-                doc.getText(),
-                extractScore(doc),
-                doc.getMetadata()
-        );
-    }
+    return new Document(vectorDocument.id(), prefixedContent, metadata);
+  }
 
-    private String buildFilter(final VectorQuery query) {
-        return "knowledgeBaseId == '" + query.knowledgeBaseId().asText() + "'";
-    }
+  private VectorSearchResult toSearchResult(final Document document) {
+    return new VectorSearchResult(document.getId(), document.getText(), extractScore(document), document.getMetadata());
+  }
 
-    private double extractScore(final Document doc) {
-        return doc.getScore() != null ? doc.getScore() : 0.0;
-    }
+  private String buildKnowledgeBaseFilter(final VectorQuery query) {
+    return buildKnowledgeBaseFilter(query.knowledgeBaseId());
+  }
+
+  private String buildKnowledgeBaseFilter(final KnowledgeBaseId knowledgeBaseId) {
+    return "%s == '%s'".formatted(KNOWLEDGE_BASE_ID_METADATA_KEY, knowledgeBaseId.asText());
+  }
+
+  private double extractScore(final Document document) {
+    return document.getScore() == null ? 0.0 : document.getScore();
+  }
 }

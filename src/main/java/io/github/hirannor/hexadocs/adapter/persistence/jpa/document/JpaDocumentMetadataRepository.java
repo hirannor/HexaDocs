@@ -14,7 +14,6 @@ import java.util.function.Function;
 
 @Repository
 class JpaDocumentMetadataRepository implements DocumentMetadataRepository {
-
     private final Function<DocumentEntity, Document> mapToDomain;
     private final Function<Document, DocumentEntity> mapToEntity;
 

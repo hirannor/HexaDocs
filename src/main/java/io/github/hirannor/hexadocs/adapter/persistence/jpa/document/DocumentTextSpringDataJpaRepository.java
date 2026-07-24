@@ -2,14 +2,12 @@ package io.github.hirannor.hexadocs.adapter.persistence.jpa.document;
 
 import org.springframework.data.repository.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface DocumentTextSpringDataJpaRepository extends Repository<DocumentTextEntity, Long> {
-    Optional<DocumentTextEntity> findByDocumentId(final String documentId);
+  List<DocumentTextEntity> findAllByDocumentIdOrderByPageNumberAsc(String documentId);
 
-    void deleteByDocumentId(final String documentId);
+  void deleteByDocumentId(String documentId);
 
-    boolean existsByDocumentId(final String documentId);
-
-    void save(final DocumentTextEntity entity);
+  void saveAll(Iterable<DocumentTextEntity> entities);
 }

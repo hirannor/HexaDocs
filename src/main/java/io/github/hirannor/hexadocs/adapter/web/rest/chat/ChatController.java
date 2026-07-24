@@ -22,15 +22,11 @@ class ChatController {
 
     @PostMapping
     public ResponseEntity<ChatResponse> ask(@RequestBody final ChatRequest request) {
-        final AskQuestion command = AskQuestion.issue(
-                KnowledgeBaseId.from(request.getKnowledgeBaseId()), request.getQuestion()
-        );
+        final AskQuestion command = AskQuestion.issue(KnowledgeBaseId.from(request.getKnowledgeBaseId()),
+                request.getQuestion());
 
         final Answer answer = question.ask(command);
 
-        return ResponseEntity.ok(
-                new ChatResponse(answer.content())
-        );
+        return ResponseEntity.ok(new ChatResponse(answer.content()));
     }
-
 }

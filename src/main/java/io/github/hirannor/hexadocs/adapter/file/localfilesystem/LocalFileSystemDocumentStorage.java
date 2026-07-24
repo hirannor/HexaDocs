@@ -1,7 +1,7 @@
 package io.github.hirannor.hexadocs.adapter.file.localfilesystem;
 
-import io.github.hirannor.hexadocs.application.document.port.DocumentFile;
-import io.github.hirannor.hexadocs.application.document.port.DocumentStorage;
+import io.github.hirannor.hexadocs.application.document.port.storage.document.DocumentFile;
+import io.github.hirannor.hexadocs.application.document.port.storage.document.DocumentStorage;
 import io.github.hirannor.hexadocs.domain.document.DocumentId;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MimeType;
@@ -17,7 +17,6 @@ import java.util.function.Supplier;
 
 @Component
 class LocalFileSystemDocumentStorage implements DocumentStorage {
-
     private static final String PDF_EXTENSION = ".pdf";
     private static final MimeType PDF_MIME_TYPE = MimeType.valueOf("application/pdf");
 
@@ -39,9 +38,7 @@ class LocalFileSystemDocumentStorage implements DocumentStorage {
 
             final Path target = dir.resolve(fileName);
 
-            Files.write(target, file.content(),
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.TRUNCATE_EXISTING,
+            Files.write(target, file.content(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING,
                     StandardOpenOption.WRITE);
 
         } catch (IOException e) {
@@ -59,10 +56,7 @@ class LocalFileSystemDocumentStorage implements DocumentStorage {
             }
 
             try (var stream = Files.list(dir)) {
-                return stream
-                        .filter(Files::isRegularFile)
-                        .filter(this::isPdfExtension)
-                        .findFirst()
+                return stream.filter(Files::isRegularFile).filter(this::isPdfExtension).findFirst()
                         .map(this::readToBytes);
             }
 
@@ -81,14 +75,13 @@ class LocalFileSystemDocumentStorage implements DocumentStorage {
             }
 
             try (final var walk = Files.walk(dir)) {
-                walk.sorted(Comparator.reverseOrder())
-                        .forEach(path -> {
-                            try {
-                                Files.deleteIfExists(path);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
+                walk.sorted(Comparator.reverseOrder()).forEach(path -> {
+                    try {
+                        Files.deleteIfExists(path);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             }
 
         } catch (IOException e) {
@@ -142,8 +135,6 @@ class LocalFileSystemDocumentStorage implements DocumentStorage {
             return "document";
         }
 
-        return name
-                .replaceAll("[^a-zA-Z0-9-_]", "_")
-                .toLowerCase();
+        return name.replaceAll("[^a-zA-Z0-9-_]", "_").toLowerCase();
     }
 }

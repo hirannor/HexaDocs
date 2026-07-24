@@ -6,7 +6,6 @@ import io.github.hirannor.hexadocs.infrastructure.aggregate.CommandId;
 
 import java.time.Instant;
 
-
 public record CreateKnowledgeBase(
         CommandId id,
         Instant registeredAt,

@@ -1,4 +1,4 @@
-package io.github.hirannor.hexadocs.application.document.port;
+package io.github.hirannor.hexadocs.application.document.port.chunking;
 
 import java.util.List;
 

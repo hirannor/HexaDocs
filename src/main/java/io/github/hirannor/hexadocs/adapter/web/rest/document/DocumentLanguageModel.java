@@ -20,9 +20,7 @@ public enum DocumentLanguageModel {
             if (status.displayValue.equalsIgnoreCase(text)) return status;
         }
 
-        throw new IllegalArgumentException(
-                String.format("Unexpected value %s", text)
-        );
+    throw new IllegalArgumentException(String.format("Unexpected value %s", text));
     }
 
     public String displayValue() {

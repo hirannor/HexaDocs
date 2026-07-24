@@ -46,7 +46,19 @@ messaging:
 adapter:
   messaging: rabbitmq
   persistence: spring-data-jpa
-  ai: spring-ai
+  chat:
+    query-classifier: rule-based
+  ai:
+    provider: spring-ai
+    chat:
+      model: mistral
+      temperature: 0.2
+      max-tokens: 500
+      retrieval:
+        top-k: 5
+        similarity-threshold: 0.45
+    embedding:
+      model: nomic-embed-text
   file: local-file-system-storage
   chunking: npl
   extraction: hybrid-pdf-text-extractor

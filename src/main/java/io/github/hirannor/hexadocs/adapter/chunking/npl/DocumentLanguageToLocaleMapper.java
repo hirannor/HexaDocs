@@ -7,7 +7,8 @@ import java.util.function.Function;
 
 class DocumentLanguageToLocaleMapper implements Function<DocumentLanguage, Locale> {
 
-    DocumentLanguageToLocaleMapper() {}
+    DocumentLanguageToLocaleMapper() {
+    }
 
     @Override
     public Locale apply(final DocumentLanguage language) {

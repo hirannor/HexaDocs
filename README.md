@@ -28,7 +28,6 @@ workflows.
 
 ---
 
-
 ## 🧠 Core Idea
 
 Instead of treating documents as static files, HexaDocs transforms them into:
@@ -91,11 +90,13 @@ Create Knowledge base workspace
 ---
 
 ### ➤ Endpoint
+
 POST /api/knowledge-bases
 
 ---
 
 ### ➤ Request Body
+
 ```json
 {
   "name": "My Knowledge Base"
@@ -109,23 +110,25 @@ Uploads a document into a specific Knowledge Base for processing (text extractio
 ---
 
 ## ➤ Endpoint
+
 POST /api/documents/upload
 
 ---
 
 ## ➤ Content-Type
+
 multipart/form-data
 
 ---
 
 ## ➤ Request Fields
 
-| Field | Type | Required | Description |
-|------|------|----------|-------------|
-| file | binary (PDF) | Yes      | The document file to upload |
-| name | string       | Yes      | The document name | 
+| Field           | Type          | Required | Description                     |
+|-----------------|---------------|----------|---------------------------------|
+| file            | binary (PDF)  | Yes      | The document file to upload     |
+| name            | string        | Yes      | The document name               | 
 | knowledgeBaseId | string (UUID) | Yes      | ID of the target knowledge base |
- | language  | string | Yes      | Language of the document | 
+| language        | string        | Yes      | Language of the document        | 
 
 ---
 
@@ -136,11 +139,13 @@ Ask questions about documents stored in a Knowledge Base using semantic search (
 ---
 
 ## ➤ Endpoint
+
 POST /api/chat
 
 ---
 
 ### ➤ Request Body
+
 ```json
 {
   "knowledgeBaseId": "550e8400-e29b-41d4-a716-446655440000",
@@ -189,6 +194,7 @@ docker-compose up -d
 ```
 
 # ⚙️ Typical Workflow via UI
+
 1. Open http://localhost:8080
 2. Create a Knowledge Base
 3. Upload a PDF document

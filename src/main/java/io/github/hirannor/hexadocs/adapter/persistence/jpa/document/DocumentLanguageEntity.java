@@ -3,7 +3,6 @@ package io.github.hirannor.hexadocs.adapter.persistence.jpa.document;
 import java.util.Objects;
 
 public enum DocumentLanguageEntity {
-
     ENGLISH("English"),
     HUNGARIAN("Hungarian");
 
@@ -20,9 +19,7 @@ public enum DocumentLanguageEntity {
             if (status.dbRepresentation.equalsIgnoreCase(text)) return status;
         }
 
-        throw new IllegalArgumentException(
-                String.format("Unexpected value %s", text)
-        );
+    throw new IllegalArgumentException(String.format("Unexpected value %s", text));
     }
 
     public String dbRepresentation() {

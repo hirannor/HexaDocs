@@ -6,8 +6,8 @@ import io.github.hirannor.hexadocs.domain.document.DocumentLanguage;
 import java.util.function.Function;
 
 public class DocumentLanguageEntityToDomainMapper implements Function<DocumentLanguageEntity, DocumentLanguage> {
-
-    public DocumentLanguageEntityToDomainMapper() {}
+    public DocumentLanguageEntityToDomainMapper() {
+    }
 
     @Override
     public DocumentLanguage apply(final DocumentLanguageEntity entity) {
@@ -19,6 +19,3 @@ public class DocumentLanguageEntityToDomainMapper implements Function<DocumentLa
         };
     }
 }
-
-
-

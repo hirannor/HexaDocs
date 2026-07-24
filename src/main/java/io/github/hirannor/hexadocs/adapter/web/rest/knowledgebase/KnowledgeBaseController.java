@@ -5,7 +5,10 @@ import io.github.hirannor.hexadocs.domain.knowledgebase.CreateKnowledgeBase;
 import io.github.hirannor.hexadocs.domain.knowledgebase.KnowledgeBaseId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/knowledge-bases")
@@ -19,14 +22,9 @@ class KnowledgeBaseController {
 
     @PostMapping
     public ResponseEntity<CreateKnowledgeBaseResponse> create(@RequestBody CreateKnowledgeBaseRequest request) {
-        final KnowledgeBaseId knowledgeBaseId = knowledgeBase.create(
-                CreateKnowledgeBase.issue(request.getName())
-        );
+        final KnowledgeBaseId knowledgeBaseId = knowledgeBase.create(CreateKnowledgeBase.issue(request.getName()));
 
-        return ResponseEntity
-            .status(HttpStatus.CREATED)
-            .body(new CreateKnowledgeBaseResponse(knowledgeBaseId.asText())
-        );
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new CreateKnowledgeBaseResponse(knowledgeBaseId.asText()));
     }
-
 }

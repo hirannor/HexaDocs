@@ -5,43 +5,48 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "HEX_DOCUMENT_TEXTS")
+@Table(name = "HEX_DOCUMENT_TEXTS",
+        uniqueConstraints = @UniqueConstraint(name = "UK_DOCUMENT_TEXT_DOCUMENT_PAGE",
+                columnNames = {"DOCUMENT_ID", "PAGE_NUMBER"}))
 public class DocumentTextEntity {
-
     private static final int ALLOCATION_SIZE = 5;
 
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "document_text_seq"
-    )
-    @SequenceGenerator(
-            name = "document_text_seq",
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "document_text_seq")
+    @SequenceGenerator(name = "document_text_seq",
             sequenceName = "document_text_seq",
-            allocationSize = ALLOCATION_SIZE
-    )
+            allocationSize = ALLOCATION_SIZE)
     private Long id;
 
-    @Column(name = "DOCUMENT_ID", nullable = false, unique = true)
+    @Column(name = "DOCUMENT_ID",
+            nullable = false)
     private String documentId;
 
+    @Column(name = "PAGE_NUMBER",
+            nullable = false)
+    private int pageNumber;
+
     @Lob
-    @Column(name = "CONTENT", nullable = false)
+    @Column(name = "CONTENT",
+            nullable = false)
     @Basic(fetch = FetchType.LAZY)
     private String content;
 
-    @Column(name = "CREATED_AT", nullable = false)
+    @Column(name = "CREATED_AT",
+            nullable = false)
     private Instant createdAt;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "EXTRACTION_METHOD",
+            nullable = false)
+    private ExtractionMethodEntity extractionMethod;
 
     protected DocumentTextEntity() {
     }
 
     public Long id() {
         return id;
-    }
-
-    public void setId(final Long id) {
-        this.id = id;
     }
 
     public String getDocumentId() {
@@ -52,6 +57,14 @@ public class DocumentTextEntity {
         this.documentId = documentId;
     }
 
+    public int getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(final int pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
     public String getContent() {
         return content;
     }
@@ -60,11 +73,27 @@ public class DocumentTextEntity {
         this.content = content;
     }
 
-    public Instant createdAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
+    public void setCreatedAt(final Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
+    public ExtractionMethodEntity getExtractionMethod() {
+        return extractionMethod;
+    }
+
+    public void setExtractionMethod(ExtractionMethodEntity extractionMethod) {
+        this.extractionMethod = extractionMethod;
     }
 }

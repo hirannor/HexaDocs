@@ -14,9 +14,7 @@ import java.util.function.Function;
 
 @Repository
 class JpaIngestionJobRepository implements IngestionJobRepository {
-
     private final Function<IngestionJobEntity, IngestionJob> mapToDomain;
-
     private final IngestionJobSpringDataJpaRepository ingestionJobs;
 
     JpaIngestionJobRepository(final IngestionJobSpringDataJpaRepository ingestionJobs) {
@@ -26,8 +24,7 @@ class JpaIngestionJobRepository implements IngestionJobRepository {
 
     @Override
     public void save(IngestionJob job) {
-        IngestionJobEntity entity = ingestionJobs
-                .findByIngestionJobId(job.id().asText())
+        IngestionJobEntity entity = ingestionJobs.findByIngestionJobId(job.id().asText())
                 .orElseGet(IngestionJobEntity::new);
 
         IngestionJobModeller.applyChangesFrom(job).to(entity);
@@ -37,24 +34,18 @@ class JpaIngestionJobRepository implements IngestionJobRepository {
 
     @Override
     public Optional<IngestionJob> findById(final IngestionJobId id) {
-        return ingestionJobs.findByIngestionJobId(id.asText())
-                .map(mapToDomain);
+        return ingestionJobs.findByIngestionJobId(id.asText()).map(mapToDomain);
     }
 
     @Override
     public Optional<IngestionJob> findByDocumentId(final DocumentId documentId) {
-        return ingestionJobs.findByDocumentId(documentId.asText())
-                .map(mapToDomain);
+        return ingestionJobs.findByDocumentId(documentId.asText()).map(mapToDomain);
     }
 
     @Override
     public List<IngestionJob> findActiveJobs() {
-        return ingestionJobs.findByStatusIn(
-                        List.of(JobStatusEntity.PENDING, JobStatusEntity.RUNNING)
-                )
-                .stream()
-                .map(mapToDomain)
-                .toList();
+        return ingestionJobs.findByStatusIn(List.of(JobStatusEntity.PENDING, JobStatusEntity.RUNNING)).stream()
+                .map(mapToDomain).toList();
     }
 
     @Override

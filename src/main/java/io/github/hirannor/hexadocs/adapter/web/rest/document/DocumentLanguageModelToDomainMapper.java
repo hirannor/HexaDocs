@@ -6,7 +6,8 @@ import java.util.function.Function;
 
 class DocumentLanguageModelToDomainMapper implements Function<DocumentLanguageModel, DocumentLanguage> {
 
-    DocumentLanguageModelToDomainMapper() {}
+    DocumentLanguageModelToDomainMapper() {
+    }
 
     @Override
     public DocumentLanguage apply(final DocumentLanguageModel model) {
