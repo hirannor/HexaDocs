@@ -7,25 +7,11 @@ import io.github.hirannor.hexadocs.infrastructure.messaging.MessageId;
 
 import java.time.Instant;
 
-public record IngestionJobStarted(
-        MessageId id,
-        IngestionJobId jobId,
-        DocumentId documentId,
-        KnowledgeBaseId knowledgeBaseId,
-        Instant occurredAt
-) implements DomainEvent {
+public record IngestionJobStarted(MessageId id, IngestionJobId jobId, DocumentId documentId,
+                                  KnowledgeBaseId knowledgeBaseId, Instant occurredAt) implements DomainEvent {
 
-    public static IngestionJobStarted record(
-            final IngestionJobId jobId,
-            final DocumentId documentId,
-            final KnowledgeBaseId knowledgeBaseId
-    ) {
-        return new IngestionJobStarted(
-                MessageId.generate(),
-                jobId,
-                documentId,
-                knowledgeBaseId,
-                Instant.now()
-        );
+    public static IngestionJobStarted record(final IngestionJobId jobId, final DocumentId documentId,
+                                             final KnowledgeBaseId knowledgeBaseId) {
+        return new IngestionJobStarted(MessageId.generate(), jobId, documentId, knowledgeBaseId, Instant.now());
     }
 }

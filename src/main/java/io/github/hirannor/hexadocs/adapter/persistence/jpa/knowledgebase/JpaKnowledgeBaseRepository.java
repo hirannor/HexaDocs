@@ -31,8 +31,7 @@ class JpaKnowledgeBaseRepository implements KnowledgeBaseRepository {
 
     @Override
     public Optional<KnowledgeBase> findById(final KnowledgeBaseId id) {
-        return knowledgebases.findByKnowledgeBaseId(id.asText())
-                .map(mapToDomain);
+        return knowledgebases.findByKnowledgeBaseId(id.asText()).map(mapToDomain);
     }
 
     @Override

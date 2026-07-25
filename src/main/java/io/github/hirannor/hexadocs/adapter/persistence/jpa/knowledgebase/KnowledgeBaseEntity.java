@@ -9,21 +9,20 @@ public class KnowledgeBaseEntity {
     private static final int ALLOCATION_SIZE = 5;
 
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "kb_seq"
-    )
-    @SequenceGenerator(
-            name = "kb_seq",
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "kb_seq")
+    @SequenceGenerator(name = "kb_seq",
             sequenceName = "kb_seq",
-            allocationSize = ALLOCATION_SIZE
-    )
+            allocationSize = ALLOCATION_SIZE)
     private Long id;
 
-    @Column(name = "KNOWLEDGE_BASE_ID", nullable = false, unique = true)
+    @Column(name = "KNOWLEDGE_BASE_ID",
+            nullable = false,
+            unique = true)
     private String knowledgeBaseId;
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "NAME",
+            nullable = false)
     private String name;
 
     public KnowledgeBaseEntity() {

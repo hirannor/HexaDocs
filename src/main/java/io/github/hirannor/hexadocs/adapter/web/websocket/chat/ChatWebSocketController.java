@@ -17,11 +17,6 @@ class ChatWebSocketController {
 
     @MessageMapping("/chat.ask")
     public void ask(final ChatQuestionMessage message) {
-        question.ask(
-                AskQuestion.issue(
-                        KnowledgeBaseId.from(message.getKnowledgeBaseId()),
-                        message.getQuestion()
-                )
-        );
+        question.ask(AskQuestion.issue(KnowledgeBaseId.from(message.getKnowledgeBaseId()), message.getQuestion()));
     }
 }

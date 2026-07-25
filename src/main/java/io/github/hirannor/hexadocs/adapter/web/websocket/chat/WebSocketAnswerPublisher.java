@@ -16,9 +16,6 @@ class WebSocketAnswerPublisher implements AnswerPublisher {
 
     @Override
     public void publish(final Answer answer) {
-        messagingTemplate.convertAndSend(
-                "/topic/chat",
-                new ChatAnswerMessage(answer.content())
-        );
+        messagingTemplate.convertAndSend("/topic/chat", new ChatAnswerMessage(answer.content()));
     }
 }

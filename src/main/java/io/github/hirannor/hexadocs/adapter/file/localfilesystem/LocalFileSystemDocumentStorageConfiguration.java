@@ -7,10 +7,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan
-@ConditionalOnProperty(
-        value = "adapter.file",
-        havingValue = "local-file-system-storage"
-)
+@ConditionalOnProperty(value = "adapter.file",
+        havingValue = "local-file-system-storage")
 @EnableConfigurationProperties(value = LocalFileSystemDocumentStorageConfigurationProperties.class)
 public class LocalFileSystemDocumentStorageConfiguration {
 }

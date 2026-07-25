@@ -10,15 +10,11 @@ public class DocumentEntity {
     private static final int ALLOCATION_SIZE = 5;
 
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "documents_seq"
-    )
-    @SequenceGenerator(
-            name = "documents_seq",
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "documents_seq")
+    @SequenceGenerator(name = "documents_seq",
             sequenceName = "documents_seq",
-            allocationSize = ALLOCATION_SIZE
-    )
+            allocationSize = ALLOCATION_SIZE)
     private Long id;
 
     @Column(name = "DOCUMENT_ID")
@@ -34,10 +30,12 @@ public class DocumentEntity {
     private String fileReference;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "LANGUAGE", nullable = false)
+    @Column(name = "LANGUAGE",
+            nullable = false)
     private DocumentLanguageEntity language;
 
-    @Column(name = "CREATED_AT", nullable = false)
+    @Column(name = "CREATED_AT",
+            nullable = false)
     private Instant createdAt;
 
     public DocumentEntity() {

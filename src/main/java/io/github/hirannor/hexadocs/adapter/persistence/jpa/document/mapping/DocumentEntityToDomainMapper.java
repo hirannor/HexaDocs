@@ -23,12 +23,9 @@ public class DocumentEntityToDomainMapper implements Function<DocumentEntity, Do
     public Document apply(final DocumentEntity entity) {
         if (entity == null) return null;
 
-        return Document.empty()
-                .id(DocumentId.from(entity.getDocumentId()))
-                .kbId(KnowledgeBaseId.from(entity.getKnowledgeBaseId()))
-                .name(entity.getName())
+        return Document.empty().id(DocumentId.from(entity.getDocumentId()))
+                .kbId(KnowledgeBaseId.from(entity.getKnowledgeBaseId())).name(entity.getName())
                 .fileReference(FileReference.of(entity.getFileReference()))
-                .language(mapLanguage.apply(entity.getLanguage()))
-                .createDocument();
+                .language(mapLanguage.apply(entity.getLanguage())).createDocument();
     }
 }

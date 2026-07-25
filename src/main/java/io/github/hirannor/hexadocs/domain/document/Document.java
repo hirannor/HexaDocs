@@ -12,7 +12,7 @@ public class Document extends AggregateRoot {
     private final FileReference fileReference;
     private final DocumentLanguage language;
 
-    private String name;
+    private final String name;
 
     public Document(final DocumentId id, final KnowledgeBaseId kbId, final String name,
                     final FileReference fileReference, final DocumentLanguage language) {

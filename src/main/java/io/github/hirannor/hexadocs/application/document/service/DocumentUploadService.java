@@ -15,42 +15,44 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 class DocumentUploadService implements DocumentUploading {
-  private static final Logger log = LoggerFactory.getLogger(DocumentUploadService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DocumentUploadService.class);
 
-  private final DocumentMetadataRepository documentMetadata;
-  private final KnowledgeBaseRepository knowledgeBases;
-  private final DocumentStorage documentStorage;
-  private final MessagePublisher messages;
+    private final DocumentMetadataRepository documentMetadata;
+    private final KnowledgeBaseRepository knowledgeBases;
+    private final DocumentStorage documentStorage;
+    private final MessagePublisher messages;
 
-  DocumentUploadService(final DocumentMetadataRepository documentMetadata, final KnowledgeBaseRepository knowledgeBases,
-                        final DocumentStorage documentStorage, final MessagePublisher messages) {
-    this.documentMetadata = documentMetadata;
-    this.knowledgeBases = knowledgeBases;
-    this.documentStorage = documentStorage;
-    this.messages = messages;
-  }
+    DocumentUploadService(final DocumentMetadataRepository documentMetadata,
+                          final KnowledgeBaseRepository knowledgeBases, final DocumentStorage documentStorage,
+                          final MessagePublisher messages) {
+        this.documentMetadata = documentMetadata;
+        this.knowledgeBases = knowledgeBases;
+        this.documentStorage = documentStorage;
+        this.messages = messages;
+    }
 
-  @Override
-  public DocumentId upload(final UploadDocument command, final byte[] content) {
-    log.info("Uploading documentId | name={} | knowledgeBaseId={} | contentType={} | size={}", command.name(),
-            command.knowledgeBaseId().asText(), command.contentType(), content != null ? content.length : 0);
+    @Override
+    public DocumentId upload(final UploadDocument command, final byte[] content) {
+        LOGGER.info("Uploading documentId | name={} | knowledgeBaseId={} | contentType={} | size={}", command.name(),
+                command.knowledgeBaseId().asText(), command.contentType(), content != null ? content.length : 0);
 
-    knowledgeBases.findById(command.knowledgeBaseId()).orElseThrow(
-            () -> new IllegalStateException("Knowledge Base not found by id: " + command.knowledgeBaseId().asText()));
+        knowledgeBases.findById(command.knowledgeBaseId()).orElseThrow(() -> new IllegalStateException(
+                "Knowledge Base not found by id: " + command.knowledgeBaseId().asText()));
 
-    final DocumentId id = DocumentId.generate();
+        final DocumentId id = DocumentId.generate();
 
-    final Document document = Document.register(id, command.knowledgeBaseId(), command.name(),
-            FileReference.of(id.asText()), command.language());
+        final Document document = Document.register(id, command.knowledgeBaseId(), command.name(),
+                FileReference.of(id.asText()), command.language());
 
-    documentMetadata.save(document);
+        documentMetadata.save(document);
 
-    documentStorage.store(id, DocumentFile.of(command.name(), command.contentType(), content));
+        documentStorage.store(id, DocumentFile.of(command.name(), command.contentType(), content));
 
-    document.events().forEach(messages::publish);
+        document.events().forEach(messages::publish);
+        document.clearEvents();
 
-    log.info("Document upload completed successfully | documentId={}", id.asText());
+        LOGGER.info("Document upload completed successfully | documentId={}", id.asText());
 
-    return id;
+        return id;
     }
 }

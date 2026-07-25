@@ -12,9 +12,7 @@ public class KnowledgeBaseEntityToDomainMapper implements Function<KnowledgeBase
     public KnowledgeBase apply(final KnowledgeBaseEntity knowledgeBaseEntity) {
         if (knowledgeBaseEntity == null) return null;
 
-        return new KnowledgeBase(
-                KnowledgeBaseId.from(knowledgeBaseEntity.getKnowledgeBaseId()),
-                knowledgeBaseEntity.getName()
-        );
+        return new KnowledgeBase(KnowledgeBaseId.from(knowledgeBaseEntity.getKnowledgeBaseId()),
+                knowledgeBaseEntity.getName());
     }
 }

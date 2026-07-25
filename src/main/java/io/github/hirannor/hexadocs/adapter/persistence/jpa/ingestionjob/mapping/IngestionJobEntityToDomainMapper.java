@@ -21,12 +21,9 @@ public class IngestionJobEntityToDomainMapper implements Function<IngestionJobEn
     @Override
     public IngestionJob apply(final IngestionJobEntity entity) {
 
-        return IngestionJob.empty()
-                .id(IngestionJobId.from(entity.getIngestionJobId()))
+        return IngestionJob.empty().id(IngestionJobId.from(entity.getIngestionJobId()))
                 .documentId(DocumentId.from(entity.getDocumentId()))
-                .kbId(KnowledgeBaseId.from(entity.getKnowledgeBaseId()))
-                .status(mapToDomain.apply(entity.status()))
-                .error(entity.error())
-                .create();
+                .kbId(KnowledgeBaseId.from(entity.getKnowledgeBaseId())).status(mapToDomain.apply(entity.status()))
+                .error(entity.error()).create();
     }
 }

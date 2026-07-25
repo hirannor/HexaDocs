@@ -4,8 +4,7 @@ import java.util.Objects;
 
 public enum DocumentLanguageModel {
 
-    ENGLISH("English"),
-    HUNGARIAN("Hungarian");
+    ENGLISH("English"), HUNGARIAN("Hungarian");
 
     private final String displayValue;
 
@@ -20,7 +19,7 @@ public enum DocumentLanguageModel {
             if (status.displayValue.equalsIgnoreCase(text)) return status;
         }
 
-    throw new IllegalArgumentException(String.format("Unexpected value %s", text));
+        throw new IllegalArgumentException(String.format("Unexpected value %s", text));
     }
 
     public String displayValue() {

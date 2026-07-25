@@ -5,6 +5,7 @@ import io.github.hirannor.hexadocs.domain.knowledgebase.CreateKnowledgeBase;
 import io.github.hirannor.hexadocs.domain.knowledgebase.KnowledgeBase;
 import io.github.hirannor.hexadocs.domain.knowledgebase.KnowledgeBaseId;
 import io.github.hirannor.hexadocs.domain.knowledgebase.KnowledgeBaseRepository;
+import io.github.hirannor.hexadocs.infrastructure.messaging.MessagePublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,9 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 class KnowledgeBaseService implements KnowledgeBaseCreation {
     private final KnowledgeBaseRepository knowledgeBases;
+    private final MessagePublisher messages;
 
-    KnowledgeBaseService(final KnowledgeBaseRepository knowledgeBases) {
+    KnowledgeBaseService(final KnowledgeBaseRepository knowledgeBases,
+                         final MessagePublisher messages) {
         this.knowledgeBases = knowledgeBases;
+        this.messages = messages;
     }
 
     @Override
@@ -23,6 +27,9 @@ class KnowledgeBaseService implements KnowledgeBaseCreation {
         final KnowledgeBase knowledgeBase = KnowledgeBase.create(command);
 
         knowledgeBases.save(knowledgeBase);
+
+        knowledgeBase.events().forEach(messages::publish);
+        knowledgeBase.clearEvents();
 
         return knowledgeBase.id();
     }

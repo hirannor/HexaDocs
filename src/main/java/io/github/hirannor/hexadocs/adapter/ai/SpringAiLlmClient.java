@@ -14,14 +14,9 @@ class SpringAiLlmClient implements LlmClient {
     }
 
     @Override
-    public String generate(final String systemPrompt,
-                           final String userPrompt) {
+    public String generate(final String systemPrompt, final String userPrompt) {
 
-        return chatClient.prompt()
-                .system(systemPrompt)
-                .user(userPrompt)
-                .call()
-                .content();
+        return chatClient.prompt().system(systemPrompt).user(userPrompt).call().content();
     }
 
 }

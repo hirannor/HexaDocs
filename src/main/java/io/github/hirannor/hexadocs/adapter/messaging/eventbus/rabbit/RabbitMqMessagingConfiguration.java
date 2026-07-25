@@ -23,10 +23,8 @@ import java.util.Objects;
 
 @Configuration
 @ComponentScan
-@ConditionalOnProperty(
-        value = "adapter.messaging",
-        havingValue = "rabbitmq"
-)
+@ConditionalOnProperty(value = "adapter.messaging",
+        havingValue = "rabbitmq")
 @EnableScheduling
 @EnableConfigurationProperties(RabbitMqConfigurationProperties.class)
 public class RabbitMqMessagingConfiguration {
@@ -38,8 +36,7 @@ public class RabbitMqMessagingConfiguration {
     private final RabbitProperties rabbitProperties;
 
     @Autowired
-    RabbitMqMessagingConfiguration(final RabbitMqConfigurationProperties properties,
-                                   final ObjectMapper objectMapper,
+    RabbitMqMessagingConfiguration(final RabbitMqConfigurationProperties properties, final ObjectMapper objectMapper,
                                    final RabbitProperties rabbitProperties) {
         this.properties = properties;
         this.objectMapper = objectMapper;

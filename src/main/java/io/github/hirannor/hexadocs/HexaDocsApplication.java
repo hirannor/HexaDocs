@@ -17,10 +17,16 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 
 @Import({
-        RestConfiguration.class, JpaPersistenceConfiguration.class, SpringAiConfiguration.class,
-        RabbitMqMessagingConfiguration.class, HybridPdfTextExtractionConfiguration.class,
-        NplTextChunkerConfiguration.class, LocalFileSystemDocumentStorageConfiguration.class,
-        WebSocketConfiguration.class, GuiConfiguration.class, RuleBasedQueryClassifierConfiguration.class
+        RestConfiguration.class,
+        JpaPersistenceConfiguration.class,
+        SpringAiConfiguration.class,
+        RabbitMqMessagingConfiguration.class,
+        HybridPdfTextExtractionConfiguration.class,
+        NplTextChunkerConfiguration.class,
+        LocalFileSystemDocumentStorageConfiguration.class,
+        WebSocketConfiguration.class,
+        GuiConfiguration.class,
+        RuleBasedQueryClassifierConfiguration.class
 })
 @SpringBootApplication(exclude = {
         org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration.class,

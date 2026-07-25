@@ -1,0 +1,18 @@
+<task>
+Answer the question using the document section analyses below.
+
+Combine relevant information.
+Use only information from the provided analyses.
+Do not invent information.
+
+If the analyses do not contain enough information,
+state that you do not know based on the provided documents.
+</task>
+
+<analyses>
+%s
+</analyses>
+
+<question>
+%s
+</question>

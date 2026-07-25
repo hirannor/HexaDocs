@@ -4,15 +4,12 @@ import java.util.UUID;
 
 public record EventId(UUID uniqueComponent) {
     public EventId {
-        if (uniqueComponent == null)
-            throw new IllegalArgumentException("EventId can't be null");
+        if (uniqueComponent == null) throw new IllegalArgumentException("EventId can't be null");
     }
 
     public static EventId from(final String source) {
         if (source == null || source.isBlank()) {
-            throw new IllegalArgumentException(
-                    "EventId can't be null or empty"
-            );
+            throw new IllegalArgumentException("EventId can't be null or empty");
         }
 
         return new EventId(UUID.fromString(source));

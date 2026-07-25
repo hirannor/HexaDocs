@@ -4,15 +4,12 @@ import java.util.UUID;
 
 public record KnowledgeBaseId(UUID uniqueComponent) {
     public KnowledgeBaseId {
-        if (uniqueComponent == null)
-            throw new IllegalArgumentException("KnowledgeBaseId can't be null");
+        if (uniqueComponent == null) throw new IllegalArgumentException("KnowledgeBaseId can't be null");
     }
 
     public static KnowledgeBaseId from(final String source) {
         if (source == null || source.isBlank()) {
-            throw new IllegalArgumentException(
-                    "KnowledgeBaseId can't be null or empty"
-            );
+            throw new IllegalArgumentException("KnowledgeBaseId can't be null or empty");
         }
 
         return new KnowledgeBaseId(UUID.fromString(source));

@@ -11,34 +11,36 @@ public class IngestionJobEntity {
     private static final int ALLOCATION_SIZE = 5;
 
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "ingestion_job_seq"
-    )
-    @SequenceGenerator(
-            name = "ingestion_job_seq",
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "ingestion_job_seq")
+    @SequenceGenerator(name = "ingestion_job_seq",
             sequenceName = "ingestion_job_seq",
-            allocationSize = ALLOCATION_SIZE
-    )
+            allocationSize = ALLOCATION_SIZE)
     private Long id;
 
-    @Column(name = "JOB_ID", nullable = false, unique = true)
+    @Column(name = "JOB_ID",
+            nullable = false,
+            unique = true)
     private String ingestionJobId;
 
-    @Column(name = "DOCUMENT_ID", nullable = false)
+    @Column(name = "DOCUMENT_ID",
+            nullable = false)
     private String documentId;
 
-    @Column(name = "KNOWLEDGE_BASE_ID", nullable = false)
+    @Column(name = "KNOWLEDGE_BASE_ID",
+            nullable = false)
     private String knowledgeBaseId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "STATUS", nullable = false)
+    @Column(name = "STATUS",
+            nullable = false)
     private JobStatusEntity status;
 
     @Column(name = "ERROR")
     private String error;
 
-    @Column(name = "CREATED_AT", nullable = false)
+    @Column(name = "CREATED_AT",
+            nullable = false)
     private Instant createdAt;
 
     public IngestionJobEntity() {

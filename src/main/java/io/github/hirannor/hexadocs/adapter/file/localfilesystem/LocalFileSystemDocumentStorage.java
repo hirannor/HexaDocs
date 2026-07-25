@@ -110,9 +110,7 @@ class LocalFileSystemDocumentStorage implements DocumentStorage {
         final MimeType mimeType = MimeType.valueOf(file.contentType());
 
         if (!PDF_MIME_TYPE.equals(mimeType)) {
-            throw new IllegalArgumentException(
-                    "Only PDF files are supported. Received: " + file.contentType()
-            );
+            throw new IllegalArgumentException("Only PDF files are supported. Received: " + file.contentType());
         }
     }
 
@@ -125,9 +123,7 @@ class LocalFileSystemDocumentStorage implements DocumentStorage {
     }
 
     private Supplier<IllegalStateException> failBecausePdfFileWasNotFoundBy(final DocumentId documentId) {
-        return () -> new IllegalStateException(
-                "PDF file not found for document " + documentId
-        );
+        return () -> new IllegalStateException("PDF file not found for document " + documentId);
     }
 
     private String sanitizeFileName(final String name) {

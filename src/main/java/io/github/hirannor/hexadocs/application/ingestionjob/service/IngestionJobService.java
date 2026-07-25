@@ -40,6 +40,7 @@ class IngestionJobService implements IngestionJobStarting, IngestionJobCompletin
         ingestionJobs.save(job);
 
         job.events().forEach(messages::publish);
+        job.clearEvents();
 
         log.info("Ingestion job started successfully | jobId={}", job.id().asText());
 
@@ -58,6 +59,7 @@ class IngestionJobService implements IngestionJobStarting, IngestionJobCompletin
         ingestionJobs.save(job);
 
         job.events().forEach(messages::publish);
+        job.clearEvents();
 
         log.info("Ingestion job completed | jobId={}", jobId.asText());
     }
@@ -74,6 +76,7 @@ class IngestionJobService implements IngestionJobStarting, IngestionJobCompletin
         ingestionJobs.save(job);
 
         job.events().forEach(messages::publish);
+        job.clearEvents();
 
         log.info("Ingestion job failed | jobId={}", command.ingestionJobId().asText());
     }

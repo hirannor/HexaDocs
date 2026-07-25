@@ -19,32 +19,25 @@ import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan
-@ConditionalOnProperty(
-        value = "adapter.persistence",
-        havingValue = "spring-data-jpa"
-)
+@ConditionalOnProperty(value = "adapter.persistence",
+        havingValue = "spring-data-jpa")
 @EnableConfigurationProperties({JpaProperties.class, DataSourceProperties.class})
 public class JpaPersistenceConfiguration {
 
-    private static final String BUNDLE_INIT_PATH =
-            "classpath:adapter/persistence/bundle-init.xml";
+    private static final String BUNDLE_INIT_PATH = "classpath:adapter/persistence/bundle-init.xml";
 
     final DataSourceProperties dataSourceProperties;
     final JpaProperties jpaProperties;
 
     @Autowired
-    JpaPersistenceConfiguration(final DataSourceProperties dataSourceProperties,
-                                final JpaProperties jpaProperties) {
+    JpaPersistenceConfiguration(final DataSourceProperties dataSourceProperties, final JpaProperties jpaProperties) {
         this.dataSourceProperties = dataSourceProperties;
         this.jpaProperties = jpaProperties;
     }
 
     @Bean
     DataSource createDataSource(final DataSourceProperties dataSourceProperties) {
-        return dataSourceProperties
-                .initializeDataSourceBuilder()
-                .type(HikariDataSource.class)
-                .build();
+        return dataSourceProperties.initializeDataSourceBuilder().type(HikariDataSource.class).build();
     }
 
     @Bean("liquibaseForPersistence")
@@ -57,9 +50,8 @@ public class JpaPersistenceConfiguration {
     }
 
     @Bean(name = "entityManagerFactory")
-    LocalContainerEntityManagerFactoryBean createEntityManagerFactory(
-            final DataSource ds,
-            final JpaProperties jpaProperties) {
+    LocalContainerEntityManagerFactoryBean createEntityManagerFactory(final DataSource ds,
+                                                                      final JpaProperties jpaProperties) {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(ds);
         em.setPackagesToScan(JpaPersistenceConfiguration.class.getPackage().getName());

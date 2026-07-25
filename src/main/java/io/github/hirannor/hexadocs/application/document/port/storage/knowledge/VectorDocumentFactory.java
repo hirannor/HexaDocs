@@ -7,9 +7,6 @@ import io.github.hirannor.hexadocs.domain.knowledgebase.KnowledgeBaseId;
 import java.util.List;
 
 public interface VectorDocumentFactory {
-    List<VectorDocument> create(
-            final List<Chunk> chunks,
-            final DocumentId documentId,
-            final KnowledgeBaseId knowledgeBaseId
-    );
+    List<VectorDocument> create(final List<Chunk> chunks, final DocumentId documentId,
+                                final KnowledgeBaseId knowledgeBaseId);
 }

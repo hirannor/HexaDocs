@@ -33,16 +33,12 @@ class JpaDocumentMetadataRepository implements DocumentMetadataRepository {
 
     @Override
     public Optional<Document> findById(final DocumentId id) {
-        return documentMetadata.findByDocumentId(id.asText())
-                .map(mapToDomain);
+        return documentMetadata.findByDocumentId(id.asText()).map(mapToDomain);
     }
 
     @Override
     public List<Document> findByKnowledgeBaseId(final KnowledgeBaseId knowledgeBaseId) {
-        return documentMetadata.findByKnowledgeBaseId(knowledgeBaseId.asText())
-                .stream()
-                .map(mapToDomain)
-                .toList();
+        return documentMetadata.findByKnowledgeBaseId(knowledgeBaseId.asText()).stream().map(mapToDomain).toList();
     }
 
     @Override

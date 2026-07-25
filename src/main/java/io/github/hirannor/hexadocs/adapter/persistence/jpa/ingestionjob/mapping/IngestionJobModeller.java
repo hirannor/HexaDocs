@@ -11,33 +11,33 @@ import java.util.function.Function;
 
 public class IngestionJobModeller {
 
-  private final IngestionJob domain;
-  private final Function<JobStatus, JobStatusEntity> mapToEntity;
+    private final IngestionJob domain;
+    private final Function<JobStatus, JobStatusEntity> mapToEntity;
 
-  private IngestionJobModeller(final IngestionJob domain) {
-    this.domain = domain;
-    this.mapToEntity = new IngestionJobStatusToEntityMapper();
-  }
+    private IngestionJobModeller(final IngestionJob domain) {
+        this.domain = domain;
+        this.mapToEntity = new IngestionJobStatusToEntityMapper();
+    }
 
-  public static IngestionJobModeller applyChangesFrom(final IngestionJob domain) {
-    return new IngestionJobModeller(domain);
-  }
+    public static IngestionJobModeller applyChangesFrom(final IngestionJob domain) {
+        return new IngestionJobModeller(domain);
+    }
 
-  public IngestionJobEntity to(final IngestionJobEntity entity) {
-    if (entity == null) return null;
+    public IngestionJobEntity to(final IngestionJobEntity entity) {
+        if (entity == null) return null;
 
-    entity.setIngestionJobId(domain.id().asText());
+        entity.setIngestionJobId(domain.id().asText());
 
-    Optional.ofNullable(domain.documentId()).ifPresent(d -> entity.setDocumentId(d.asText()));
+        Optional.ofNullable(domain.documentId()).ifPresent(d -> entity.setDocumentId(d.asText()));
 
-    Optional.ofNullable(domain.knowledgeBaseId()).ifPresent(k -> entity.setKnowledgeBaseId(k.asText()));
+        Optional.ofNullable(domain.knowledgeBaseId()).ifPresent(k -> entity.setKnowledgeBaseId(k.asText()));
 
-    Optional.ofNullable(domain.status()).map(mapToEntity).ifPresent(entity::setStatus);
+        Optional.ofNullable(domain.status()).map(mapToEntity).ifPresent(entity::setStatus);
 
-    Optional.ofNullable(domain.error()).ifPresent(entity::setError);
+        Optional.ofNullable(domain.error()).ifPresent(entity::setError);
 
-    entity.setCreatedAt(Instant.now());
+        entity.setCreatedAt(Instant.now());
 
-    return entity;
-  }
+        return entity;
+    }
 }

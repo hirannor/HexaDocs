@@ -6,9 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan
-@ConditionalOnProperty(
-        value = "adapter.chunking",
-        havingValue = "npl"
-)
+@ConditionalOnProperty(value = "adapter.chunking",
+        havingValue = "npl")
 public class NplTextChunkerConfiguration {
 }

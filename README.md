@@ -66,6 +66,23 @@ Each document becomes:
 - Uses `mistral` via Ollama
 - Context-aware answers (RAG-based)
 
+> ⚠️ **Current limitation:** Conversation history is not implemented yet.
+>
+> Each chat request is currently processed independently. Previous questions and answers are not persisted or included in subsequent prompts. As a result, follow-up questions that depend on previous conversation context may not be interpreted correctly.
+>
+> For example:
+>
+> ```text
+> User: What is the maximum operating temperature?
+> Assistant: The maximum operating temperature is 100°C.
+>
+> User: What about the pressure?
+> ```
+>
+> The second question is processed without the previous exchange being included in the prompt.
+>
+> Conversation memory and history-aware question answering are planned for a future iteration.
+
 ### ⚡ Event-Driven Pipeline
 
 - RabbitMQ-based async processing

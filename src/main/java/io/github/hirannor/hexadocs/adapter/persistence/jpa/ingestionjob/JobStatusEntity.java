@@ -3,10 +3,7 @@ package io.github.hirannor.hexadocs.adapter.persistence.jpa.ingestionjob;
 import java.util.Objects;
 
 public enum JobStatusEntity {
-    PENDING("PENDING"),
-    RUNNING("RUNNING"),
-    COMPLETED("COMPLETED"),
-    FAILED("FAILED");
+    PENDING("PENDING"), RUNNING("RUNNING"), COMPLETED("COMPLETED"), FAILED("FAILED");
 
     private final String dbRepresentation;
 
@@ -21,7 +18,7 @@ public enum JobStatusEntity {
             if (status.dbRepresentation.equalsIgnoreCase(text)) return status;
         }
 
-    throw new IllegalArgumentException(String.format("Unexpected value %s", text));
+        throw new IllegalArgumentException(String.format("Unexpected value %s", text));
     }
 
     public String dbRepresentation() {

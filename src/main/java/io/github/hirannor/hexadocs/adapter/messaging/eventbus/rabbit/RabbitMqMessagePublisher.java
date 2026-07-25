@@ -12,8 +12,7 @@ class RabbitMqMessagePublisher implements MessagePublisher {
     private final RabbitTemplate rabbitTemplate;
     private final RabbitMqConfigurationProperties properties;
 
-    RabbitMqMessagePublisher(final RabbitTemplate rabbitTemplate,
-                             final RabbitMqConfigurationProperties properties) {
+    RabbitMqMessagePublisher(final RabbitTemplate rabbitTemplate, final RabbitMqConfigurationProperties properties) {
         this.rabbitTemplate = rabbitTemplate;
         this.properties = properties;
     }
