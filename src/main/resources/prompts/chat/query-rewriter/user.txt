@@ -1,0 +1,7 @@
+Conversation history:
+%s
+
+Latest user question:
+%s
+
+Return ONLY the search query.

@@ -1,4 +1,4 @@
-package io.github.hirannor.hexadocs.application.chat.port;
+package io.github.hirannor.hexadocs.application.chat.port.query.classifier;
 
 /**
  * Classifies user questions into supported query types.

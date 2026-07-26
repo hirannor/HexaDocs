@@ -1,23 +1,26 @@
 package io.github.hirannor.hexadocs.adapter.web.websocket.chat;
 
 public class ChatQuestionMessage {
-    private String knowledgeBaseId;
+    private String conversationId;
+
     private String question;
 
     public ChatQuestionMessage() {
     }
 
-    public ChatQuestionMessage(final String knowledgeBaseId, final String question) {
-        this.knowledgeBaseId = knowledgeBaseId;
+
+    public ChatQuestionMessage(final String conversationId, final String question) {
+        this.conversationId = conversationId;
         this.question = question;
     }
 
-    public String getKnowledgeBaseId() {
-        return knowledgeBaseId;
+
+    public String getConversationId() {
+        return conversationId;
     }
 
-    public void setKnowledgeBaseId(final String knowledgeBaseId) {
-        this.knowledgeBaseId = knowledgeBaseId;
+    public void setConversationId(final String conversationId) {
+        this.conversationId = conversationId;
     }
 
     public String getQuestion() {

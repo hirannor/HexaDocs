@@ -1,7 +1,7 @@
 package io.github.hirannor.hexadocs.adapter.chat;
 
-import io.github.hirannor.hexadocs.application.chat.port.QueryClassifier;
-import io.github.hirannor.hexadocs.application.chat.port.QueryType;
+import io.github.hirannor.hexadocs.application.chat.port.query.classifier.QueryClassifier;
+import io.github.hirannor.hexadocs.application.chat.port.query.classifier.QueryType;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;

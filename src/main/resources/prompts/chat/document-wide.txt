@@ -1,18 +1,35 @@
-<task>
-Answer the question using the document section analyses below.
+Answer the question using the document analysis results below.
 
-Combine relevant information.
-Use only information from the provided analyses.
-Do not invent information.
+Combine information from relevant analyses.
 
-If the analyses do not contain enough information,
-state that you do not know based on the provided documents.
+Rules:
+
+- Use only information contained in the analyses.
+- Do not add information from your own knowledge.
+- Do not guess.
+- If the information is insufficient, say that you do not know based on the provided documents.
+
+Consider previous conversation context when answering.
+
 </task>
 
-<analyses>
+
+<conversation_history>
+
 %s
+
+</conversation_history>
+
+
+<analyses>
+
+%s
+
 </analyses>
 
+
 <question>
+
 %s
+
 </question>

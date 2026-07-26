@@ -66,22 +66,6 @@ Each document becomes:
 - Uses `mistral` via Ollama
 - Context-aware answers (RAG-based)
 
-> ⚠️ **Current limitation:** Conversation history is not implemented yet.
->
-> Each chat request is currently processed independently. Previous questions and answers are not persisted or included in subsequent prompts. As a result, follow-up questions that depend on previous conversation context may not be interpreted correctly.
->
-> For example:
->
-> ```text
-> User: What is the maximum operating temperature?
-> Assistant: The maximum operating temperature is 100°C.
->
-> User: What about the pressure?
-> ```
->
-> The second question is processed without the previous exchange being included in the prompt.
->
-> Conversation memory and history-aware question answering are planned for a future iteration.
 
 ### ⚡ Event-Driven Pipeline
 
@@ -96,81 +80,9 @@ The system works in 3 main steps:
 
 1. Create a Knowledge Base
 2. Upload Documents into the Knowledge Base
+3. Create conversation
 3. Ask questions via Chat (RAG)
 
----
-
-# 🧠 1. Create Knowledge Base
-
-Create Knowledge base workspace
-
----
-
-### ➤ Endpoint
-
-POST /api/knowledge-bases
-
----
-
-### ➤ Request Body
-
-```json
-{
-  "name": "My Knowledge Base"
-}
-```
-
-# 📄 2. Upload Document
-
-Uploads a document into a specific Knowledge Base for processing (text extraction + embeddings).
-
----
-
-## ➤ Endpoint
-
-POST /api/documents/upload
-
----
-
-## ➤ Content-Type
-
-multipart/form-data
-
----
-
-## ➤ Request Fields
-
-| Field           | Type          | Required | Description                     |
-|-----------------|---------------|----------|---------------------------------|
-| file            | binary (PDF)  | Yes      | The document file to upload     |
-| name            | string        | Yes      | The document name               | 
-| knowledgeBaseId | string (UUID) | Yes      | ID of the target knowledge base |
-| language        | string        | Yes      | Language of the document        | 
-
----
-
-# 🧾 3. Ask Question (Chat / RAG)
-
-Ask questions about documents stored in a Knowledge Base using semantic search (vector DB) + LLM generation.
-
----
-
-## ➤ Endpoint
-
-POST /api/chat
-
----
-
-### ➤ Request Body
-
-```json
-{
-  "knowledgeBaseId": "550e8400-e29b-41d4-a716-446655440000",
-  "question": "My question?"
-}
-```
-
----
 
 ## 🧪 OCR (Tesseract) Setup
 

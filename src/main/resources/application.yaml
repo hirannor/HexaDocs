@@ -56,11 +56,11 @@ adapter:
       max-tokens: 500
       retrieval:
         top-k: 5
-        similarity-threshold: 0.45
+        similarity-threshold: 0.60
     embedding:
       model: nomic-embed-text
   file: local-file-system-storage
-  chunking: npl
+  chunking: nlp
   extraction: hybrid-pdf-text-extractor
 
 storage:

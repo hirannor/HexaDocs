@@ -1,21 +1,30 @@
-<task>
-Analyze this section of the document in relation to the question.
 
-Extract only facts explicitly supported by the provided context.
-Do not use information outside of the provided context.
-Do not invent missing information.
+Analyze this document section against the question.
 
-If this section contains no relevant information,
-respond exactly with:
+Extract only facts explicitly supported by this section.
+
+Do not use external knowledge.
+Do not infer missing information.
+
+If this section contains no useful information,
+respond exactly:
+
 NO_RELEVANT_INFORMATION
 
 Be concise.
+
 </task>
 
+
 <context>
+
 %s
+
 </context>
 
+
 <question>
+
 %s
+
 </question>

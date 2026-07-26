@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HexaDocs Workspace</title>
+
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/workspace.css}">
+
+</head>
+<body>
+
+<header class="topbar">
+    <a class="brand" href="/">
+        <svg aria-hidden="true" class="brand__icon" fill="none" viewBox="0 0 28 28">
+            <path d="M14 2L25.26 8.5V21.5L14 28L2.74 21.5V8.5L14 2Z" fill="#2d4b9e" stroke="#5b8af5"
+                  stroke-width="1.2"/>
+            <path d="M14 7L20.5 10.75V18.25L14 22L7.5 18.25V10.75L14 7Z" fill="#5b8af5" opacity="0.3"/>
+            <circle cx="14" cy="14" fill="#5b8af5" r="3"/>
+        </svg>
+
+
+        <span>Hexa<span class="brand__accent">Docs</span></span>
+    </a>
+
+    <div class="connection-status" id="status">
+        <span class="connection-status__dot" id="statusDot"></span>
+        <span id="statusLabel">Disconnected</span>
+    </div>
+
+
+</header>
+
+<aside class="sidebar">
+    <section class="sidebar-section">
+        <div class="section-heading">
+            <span class="section-heading__label">Knowledge Base</span>
+        </div>
+
+        <div id="knowledgeBaseSelection">
+            <div class="form-field">
+                <label for="knowledgeBaseSelect">Active knowledge base</label>
+
+                <select id="knowledgeBaseSelect">
+                    <option value="">Select existing knowledge base</option>
+                </select>
+            </div>
+
+            <button class="button button--secondary" id="showCreateKbButton" type="button">
+                <svg aria-hidden="true" viewBox="0 0 13 13">
+                    <path d="M6.5 1v11M1 6.5h11" stroke="currentColor" stroke-linecap="round" stroke-width="2"/>
+                </svg>
+
+                Create new knowledge base
+            </button>
+        </div>
+
+        <div hidden id="knowledgeBaseCreation">
+            <div class="form-field">
+                <label for="newKnowledgeBaseName">Knowledge base name</label>
+
+                <input
+                        autocomplete="off"
+                        id="newKnowledgeBaseName"
+                        placeholder="e.g. Product documentation"
+                        type="text">
+            </div>
+
+            <div class="form-actions">
+                <button class="button button--ghost" id="cancelCreateKb" type="button">
+                    Cancel
+                </button>
+
+                <button class="button button--primary" id="confirmCreateKb" type="button">
+                    <svg aria-hidden="true" viewBox="0 0 13 13">
+                        <path d="M6.5 1v11M1 6.5h11" stroke="currentColor" stroke-linecap="round" stroke-width="2"/>
+                    </svg>
+
+                    Create
+                </button>
+            </div>
+        </div>
+
+        <div class="active-kb">
+            <span class="section-heading__label">Active KB</span>
+
+            <div class="kb-badge">
+                <svg aria-hidden="true" viewBox="0 0 12 12">
+                    <path d="M6 1L10.33 3.5V8.5L6 11 1.67 8.5V3.5L6 1Z" stroke="currentColor" stroke-width="1.2"/>
+                </svg>
+
+                <span id="activeKb">—</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="sidebar-section sidebar-section--conversations">
+        <div class="section-heading section-heading--actions">
+            <span class="section-heading__label">Conversations</span>
+
+            <button
+                    aria-label="Create new conversation"
+                    class="icon-button"
+                    id="newConversationButton"
+                    title="New conversation"
+                    type="button">
+                +
+            </button>
+        </div>
+
+        <div class="conversation-list" id="conversationList">
+            <div class="empty-message">Select a knowledge base</div>
+        </div>
+    </section>
+
+    <section class="sidebar-section">
+        <div class="section-heading">
+            <span class="section-heading__label">Upload document</span>
+        </div>
+
+        <div class="form-field">
+            <label for="file">File</label>
+            <input id="file" type="file">
+        </div>
+
+        <div class="form-field">
+            <label for="docName">Document name</label>
+            <input id="docName" placeholder="my-document" type="text">
+        </div>
+
+        <div class="form-field">
+            <label for="language">Language</label>
+
+            <select id="language">
+                <option
+                        th:each="lang : ${languages}"
+                        th:text="${lang.displayValue}"
+                        th:value="${lang.name()}">
+                </option>
+            </select>
+        </div>
+
+        <button class="button button--secondary" id="uploadButton" type="button">
+            <svg aria-hidden="true" viewBox="0 0 13 13">
+                <path d="M6.5 9V2M3 5l3.5-3.5L10 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                      stroke-width="1.5"/>
+                <path d="M1 11h11" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"/>
+            </svg>
+
+            Upload document
+        </button>
+
+        <p class="upload-feedback" id="uploadFeedback"></p>
+    </section>
+
+</aside>
+
+<main class="main">
+    <header class="chat-header">
+        <svg aria-hidden="true" class="chat-header__icon" viewBox="0 0 14 14">
+            <path d="M7 1L12.2 3.85V9.15L7 12 1.8 9.15V3.85L7 1Z" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+
+
+        <div class="chat-header__content">
+            <h1 id="chatTitle">No conversation selected</h1>
+            <span id="chatKnowledgeBase">No knowledge base selected</span>
+        </div>
+    </header>
+
+    <section class="chat" id="chat">
+        <div class="empty-state" id="emptyState">
+            <svg aria-hidden="true" viewBox="0 0 40 40">
+                <path d="M20 4L35 12.3V27.7L20 36 5 27.7V12.3L20 4Z" stroke="currentColor" stroke-width="1.5"/>
+                <circle cx="20" cy="20" r="4" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+
+            <p>Select a conversation to begin</p>
+        </div>
+    </section>
+
+    <footer class="chat-input">
+        <input
+                autocomplete="off"
+                id="input"
+                placeholder="Ask something about your documents…"
+                type="text">
+
+        <button aria-label="Send message" id="sendButton" type="button">
+            <svg aria-hidden="true" viewBox="0 0 16 16">
+                <path d="M14 8L2 2l2.5 6L2 14l12-6z" fill="currentColor"/>
+            </svg>
+        </button>
+    </footer>
+
+</main>
+
+<div class="modal" id="createConversationModal">
+    <div
+            aria-labelledby="createConversationTitle"
+            aria-modal="true"
+            class="modal__dialog"
+            role="dialog">
+
+
+        <div class="modal__header">
+            <div>
+                <span class="modal__eyebrow">Conversation</span>
+                <h2 id="createConversationTitle">New conversation</h2>
+            </div>
+
+            <button
+                    aria-label="Close"
+                    class="modal__close"
+                    id="closeCreateConversationModal"
+                    type="button">
+                ×
+            </button>
+        </div>
+
+        <div class="modal__body">
+            <p class="modal__description">
+                Start a new conversation about the documents in your active knowledge base.
+            </p>
+
+            <div class="form-field">
+                <label for="conversationTitle">Title</label>
+
+                <input
+                        autocomplete="off"
+                        id="conversationTitle"
+                        placeholder="e.g. Product documentation"
+                        type="text">
+            </div>
+        </div>
+
+        <div class="modal__footer">
+            <button class="button button--primary" id="confirmCreateConversation" type="button">
+                <svg aria-hidden="true" viewBox="0 0 13 13">
+                    <path d="M6.5 1v11M1 6.5h11" stroke="currentColor" stroke-linecap="round" stroke-width="2"/>
+                </svg>
+
+                Create conversation
+            </button>
+
+            <button class="button button--ghost" id="cancelCreateConversation" type="button">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+
+<script th:src="@{/js/workspace.js}"></script>
+
+</body>
+</html>

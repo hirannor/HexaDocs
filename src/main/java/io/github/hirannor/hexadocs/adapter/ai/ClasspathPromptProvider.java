@@ -1,7 +1,7 @@
 package io.github.hirannor.hexadocs.adapter.ai;
 
-import io.github.hirannor.hexadocs.application.chat.port.PromptProvider;
-import io.github.hirannor.hexadocs.application.chat.port.PromptType;
+import io.github.hirannor.hexadocs.application.chat.port.prompt.PromptProvider;
+import io.github.hirannor.hexadocs.application.chat.port.prompt.PromptType;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +15,6 @@ import java.util.Map;
  */
 @Component
 class ClasspathPromptProvider implements PromptProvider {
-
     private static final Map<PromptType, String> PROMPT_PATHS = createPromptPaths();
 
     private final Map<PromptType, String> prompts;
@@ -51,9 +50,11 @@ class ClasspathPromptProvider implements PromptProvider {
         final Map<PromptType, String> paths = new EnumMap<>(PromptType.class);
 
         paths.put(PromptType.SYSTEM, "prompts/chat/system.txt");
-        paths.put(PromptType.SPECIFIC_QUESTION, "prompts/chat/specific-question.txt");
         paths.put(PromptType.DOCUMENT_ANALYSIS, "prompts/chat/document-analysis.txt");
         paths.put(PromptType.DOCUMENT_WIDE, "prompts/chat/document-wide.txt");
+
+        paths.put(PromptType.QUERY_REWRITER_SYSTEM, "prompts/chat/query-rewriter/system.txt");
+        paths.put(PromptType.QUERY_REWRITER_USER, "prompts/chat/query-rewriter/user.txt");
 
         return Map.copyOf(paths);
     }

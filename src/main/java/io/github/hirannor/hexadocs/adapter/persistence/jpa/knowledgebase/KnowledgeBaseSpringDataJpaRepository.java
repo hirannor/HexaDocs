@@ -2,6 +2,7 @@ package io.github.hirannor.hexadocs.adapter.persistence.jpa.knowledgebase;
 
 import org.springframework.data.repository.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface KnowledgeBaseSpringDataJpaRepository extends Repository<KnowledgeBaseEntity, Long> {
@@ -9,7 +10,6 @@ public interface KnowledgeBaseSpringDataJpaRepository extends Repository<Knowled
 
     Optional<KnowledgeBaseEntity> findByKnowledgeBaseId(final String id);
 
-    boolean existsByKnowledgeBaseId(final String id);
+    List<KnowledgeBaseEntity> findAll();
 
-    void deleteByKnowledgeBaseId(final String id);
 }

@@ -1,4 +1,4 @@
-package io.github.hirannor.hexadocs.application.chat.port;
+package io.github.hirannor.hexadocs.application.chat.port.prompt;
 
 /**
  * Identifies a prompt used by the chat application.
@@ -21,7 +21,12 @@ public enum PromptType {
     DOCUMENT_WIDE,
 
     /**
-     * Answers a specific question using retrieved document context.
+     * Replaces pronouns, relative terms, and implicit context in a user query with explicit entities.
      */
-    SPECIFIC_QUESTION
+    QUERY_REWRITER_USER,
+
+    /**
+     * Instructs the language model on how to reformulate multi-turn user queries for optimal vector retrieval.
+     */
+    QUERY_REWRITER_SYSTEM
 }

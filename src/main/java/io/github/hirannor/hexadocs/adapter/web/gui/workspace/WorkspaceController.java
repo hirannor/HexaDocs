@@ -1,18 +1,18 @@
-package io.github.hirannor.hexadocs.adapter.web.gui.chat;
+package io.github.hirannor.hexadocs.adapter.web.gui.workspace;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-class ChatPageController {
-    ChatPageController() {
+class WorkspaceController {
+    WorkspaceController() {
     }
 
     @GetMapping("/")
-    public String chatPage(final Model model) {
+    public String workspace(final Model model) {
         model.addAttribute("languages", DocumentLanguageModel.values());
 
-        return "chat";
+        return "workspace";
     }
 }

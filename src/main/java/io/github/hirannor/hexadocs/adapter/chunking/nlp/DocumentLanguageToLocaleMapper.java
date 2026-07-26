@@ -1,4 +1,4 @@
-package io.github.hirannor.hexadocs.adapter.chunking.npl;
+package io.github.hirannor.hexadocs.adapter.chunking.nlp;
 
 import io.github.hirannor.hexadocs.domain.document.DocumentLanguage;
 

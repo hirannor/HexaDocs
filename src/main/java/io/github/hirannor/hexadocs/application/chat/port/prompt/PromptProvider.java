@@ -1,4 +1,4 @@
-package io.github.hirannor.hexadocs.application.chat.port;
+package io.github.hirannor.hexadocs.application.chat.port.prompt;
 
 /**
  * Provides prompts used by the chat application.

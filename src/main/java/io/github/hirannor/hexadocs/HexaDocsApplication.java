@@ -2,7 +2,7 @@ package io.github.hirannor.hexadocs;
 
 import io.github.hirannor.hexadocs.adapter.ai.SpringAiConfiguration;
 import io.github.hirannor.hexadocs.adapter.chat.RuleBasedQueryClassifierConfiguration;
-import io.github.hirannor.hexadocs.adapter.chunking.npl.NplTextChunkerConfiguration;
+import io.github.hirannor.hexadocs.adapter.chunking.nlp.NlpTextChunkerConfiguration;
 import io.github.hirannor.hexadocs.adapter.extraction.pdf.HybridPdfTextExtractionConfiguration;
 import io.github.hirannor.hexadocs.adapter.file.localfilesystem.LocalFileSystemDocumentStorageConfiguration;
 import io.github.hirannor.hexadocs.adapter.messaging.eventbus.rabbit.RabbitMqMessagingConfiguration;
@@ -17,16 +17,10 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 
 @Import({
-        RestConfiguration.class,
-        JpaPersistenceConfiguration.class,
-        SpringAiConfiguration.class,
-        RabbitMqMessagingConfiguration.class,
-        HybridPdfTextExtractionConfiguration.class,
-        NplTextChunkerConfiguration.class,
-        LocalFileSystemDocumentStorageConfiguration.class,
-        WebSocketConfiguration.class,
-        GuiConfiguration.class,
-        RuleBasedQueryClassifierConfiguration.class
+        RestConfiguration.class, JpaPersistenceConfiguration.class, SpringAiConfiguration.class,
+        RabbitMqMessagingConfiguration.class, HybridPdfTextExtractionConfiguration.class,
+        NlpTextChunkerConfiguration.class, LocalFileSystemDocumentStorageConfiguration.class,
+        WebSocketConfiguration.class, GuiConfiguration.class, RuleBasedQueryClassifierConfiguration.class
 })
 @SpringBootApplication(exclude = {
         org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration.class,

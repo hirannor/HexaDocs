@@ -6,7 +6,6 @@ import java.util.Objects;
 
 public class KnowledgeBase extends AggregateRoot {
     private final KnowledgeBaseId id;
-
     private String name;
 
     public KnowledgeBase(final KnowledgeBaseId id, final String name) {

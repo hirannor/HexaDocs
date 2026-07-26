@@ -1,4 +1,4 @@
-package io.github.hirannor.hexadocs.adapter.web.gui.chat;
+package io.github.hirannor.hexadocs.adapter.web.gui.workspace;
 
 import java.util.Objects;
 

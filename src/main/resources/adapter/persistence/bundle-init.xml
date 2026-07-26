@@ -8,5 +8,7 @@
     <include file="adapter/persistence/ddl/create-document-texts-1.0.0.xml"/>
     <include file="adapter/persistence/ddl/create-ingestion-jobs-1.0.0.xml"/>
     <include file="adapter/persistence/ddl/create-knowledgebase-1.0.0.xml"/>
+    <include file="/adapter/persistence/ddl/create-chat-memory-1.0.0.xml"/>
+    <include file="/adapter/persistence/ddl/create-conversation-history-1.0.0.xml"/>
 
 </databaseChangeLog>
